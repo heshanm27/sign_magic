@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "782861776804",
+    "project_id": "sign-magic-3b3bf",
+    "storage_bucket": "sign-magic-3b3bf.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:782861776804:android:7d704d76251ae1e2b8b331",
+        "android_client_info": {
+          "package_name": "com.sign_magic"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDiJeCvJ76TM5ulrxSoDFrNPhaQHev1BK0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
