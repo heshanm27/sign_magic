@@ -28,9 +28,12 @@ export default function RoutesStack({ }: Props) {
 
   return (
     <Stack.Navigator>
-      {user ? (
+      {true ? (
         <>
-          <Stack.Screen name="Home" component={Home} />
+          <Stack.Screen name="Home" component={Home} options={{
+            headerShown: false
+          
+          }} />
           <Stack.Screen name="Notification" component={Notification} />
           <Stack.Screen name="Profile" component={Profile} />
         </>
