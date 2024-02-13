@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import  { useEffect, useState } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Home from '@src/screens/home';
 import Notification from '@src/screens/notification';
@@ -6,6 +6,7 @@ import Profile from '@src/screens/profile';
 import auth from '@react-native-firebase/auth';
 import SignIn from '@src/screens/sign-in';
 import SignUp from '@src/screens/sign-up';
+import LanguageDifficulty from '@src/screens/language/difficulty';
 type Props = {};
 
 export default function RoutesStack({ }: Props) {
@@ -30,12 +31,16 @@ export default function RoutesStack({ }: Props) {
     <Stack.Navigator>
       {true ? (
         <>
-          <Stack.Screen name="Home" component={Home} options={{
+          {/* <Stack.Screen name="Home" component={Home} options={{
             headerShown: false
           
           }} />
           <Stack.Screen name="Notification" component={Notification} />
-          <Stack.Screen name="Profile" component={Profile} />
+          <Stack.Screen name="Profile" component={Profile} /> */}
+          <Stack.Screen options={{
+            headerShown: false
+          
+          }} name="LanguageDifficulty" component={LanguageDifficulty} />
         </>
       ) : (
         <>
