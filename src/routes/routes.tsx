@@ -7,6 +7,7 @@ import auth from '@react-native-firebase/auth';
 import SignIn from '@src/screens/sign-in';
 import SignUp from '@src/screens/sign-up';
 import LanguageDifficulty from '@src/screens/language/difficulty';
+import LanguageLevel from '@src/screens/language/level';
 type Props = {};
 
 export default function RoutesStack({ }: Props) {
@@ -37,10 +38,15 @@ export default function RoutesStack({ }: Props) {
           }} />
           <Stack.Screen name="Notification" component={Notification} />
           <Stack.Screen name="Profile" component={Profile} /> */}
-          <Stack.Screen options={{
+          {/* <Stack.Screen options={{
             headerShown: false
           
-          }} name="LanguageDifficulty" component={LanguageDifficulty} />
+          }} name="LanguageDifficulty" component={LanguageDifficulty} /> */}
+
+          <Stack.Screen name="LanguageLevel" options={{
+            headerShown: false
+          
+          }} component={LanguageLevel} />
         </>
       ) : (
         <>

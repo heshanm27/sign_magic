@@ -25,7 +25,7 @@ async function getDifficulty() {
 }
 
 
-async function getUserGameHistory(difficultyData) {
+async function getUserGameHistory(difficultyData:any) {
     const userGameHistoryQuerySnapshot = await firestore().collection('userGameHistory').doc('69eXeT4xIUe2iIVu06ODOlPGJyL2').collection('userGameHistory').get();
 
     userGameHistoryQuerySnapshot.forEach((doc) => {
@@ -33,11 +33,13 @@ async function getUserGameHistory(difficultyData) {
         const difficultyLvl = data.difficultyLvl;
 
         // Update completed questions in difficultyData if the difficulty level exists
-        const difficultyIndex = difficultyData.findIndex(difficulty => difficulty.id === difficultyLvl);
+        const difficultyIndex = difficultyData.findIndex((difficulty:any) => difficulty.id === difficultyLvl);
         if (difficultyIndex !== -1) {
             difficultyData[difficultyIndex].completedQuestions = (difficultyData[difficultyIndex].completedQuestions || 0) + 1;
         }
     });
+
+    return difficultyData;
 
 }
 
@@ -49,14 +51,13 @@ async function getUserGameHistory(difficultyData) {
         // Use async function to fetch data and update state
         async function fetchData() {
             const difficultyData = await getDifficulty();
-            await getUserGameHistory(difficultyData); // Pass difficultyData to update completed questions
-            setDifficulty(difficultyData);
+           const updateDifficulityData= await getUserGameHistory(difficultyData); // Pass difficultyData to update completed questions
+            setDifficulty(updateDifficulityData);
         }
 
         fetchData();
     },[])
 
-    console.log(difficulty)
 
   return (
     <View className='bg-custom-language flex flex-1 '>
