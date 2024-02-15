@@ -8,6 +8,7 @@ import SignIn from '@src/screens/sign-in';
 import SignUp from '@src/screens/sign-up';
 import LanguageDifficulty from '@src/screens/language/difficulty';
 import LanguageLevel from '@src/screens/language/level';
+import GameScreen from '@src/screens/game';
 type Props = {};
 
 export default function RoutesStack({ }: Props) {
@@ -43,10 +44,15 @@ export default function RoutesStack({ }: Props) {
           
           }} name="LanguageDifficulty" component={LanguageDifficulty} /> */}
 
-          <Stack.Screen name="LanguageLevel" options={{
+          {/* <Stack.Screen name="LanguageLevel" options={{
             headerShown: false
           
-          }} component={LanguageLevel} />
+          }} component={LanguageLevel} /> */}
+
+          <Stack.Screen name="GameScreen" options={{
+            headerShown: false
+          
+          }} component={GameScreen} />
         </>
       ) : (
         <>
