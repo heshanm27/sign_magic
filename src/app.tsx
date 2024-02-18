@@ -1,9 +1,13 @@
+import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import RoutesStack from './routes/routes';
 import { NativeWindStyleSheet } from "nativewind";
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { ThemeProvider, createTheme } from '@rneui/themed';
-import { SafeAreaView } from 'react-native'
+import { SafeAreaView,StatusBar } from 'react-native'
+import { useEffect } from 'react';
+import { useCameraPermission } from 'react-native-vision-camera';
+import "./i18n/i8n";
 const theme = createTheme({
   lightColors: {
     primary: '#e7e7e8',
@@ -19,10 +23,20 @@ NativeWindStyleSheet.setOutput({
 });
 
 const App = () => {
+
+  const { hasPermission,requestPermission} = useCameraPermission();
+
+  useEffect(() => {
+
+    if(!hasPermission){
+      requestPermission()
+    }
+
+  }, [hasPermission]);
   return (
     <SafeAreaProvider>
-    
-      <ThemeProvider theme={theme}>
+    <StatusBar hidden={true}/>
+    <ThemeProvider theme={theme}>
     <NavigationContainer>
       <RoutesStack />
     </NavigationContainer>

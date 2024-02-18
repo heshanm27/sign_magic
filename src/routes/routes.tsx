@@ -9,6 +9,8 @@ import SignUp from '@src/screens/sign-up';
 import LanguageDifficulty from '@src/screens/language/difficulty';
 import LanguageLevel from '@src/screens/language/level';
 import GameScreen from '@src/screens/game';
+
+import {StatusBar} from 'react-native';
 type Props = {};
 
 export default function RoutesStack({ }: Props) {
@@ -30,24 +32,27 @@ export default function RoutesStack({ }: Props) {
   const Stack = createNativeStackNavigator();
 
   return (
-    <Stack.Navigator>
+
+
+    
+    <Stack.Navigator initialRouteName={true ? "Home" : "SignIn"}>
       {true ? (
         <>
-          {/* <Stack.Screen name="Home" component={Home} options={{
-            headerShown: false
-          
+          <Stack.Screen  name="Home" component={Home} 
+          options={{
+            headerShown: false,
           }} />
           <Stack.Screen name="Notification" component={Notification} />
-          <Stack.Screen name="Profile" component={Profile} /> */}
-          {/* <Stack.Screen options={{
+          <Stack.Screen name="Profile" component={Profile} />
+          <Stack.Screen options={{
             headerShown: false
           
-          }} name="LanguageDifficulty" component={LanguageDifficulty} /> */}
+          }} name="LanguageDifficulty" component={LanguageDifficulty} />
 
-          {/* <Stack.Screen name="LanguageLevel" options={{
+          <Stack.Screen name="LanguageLevel" options={{
             headerShown: false
           
-          }} component={LanguageLevel} /> */}
+          }} component={LanguageLevel} />
 
           <Stack.Screen name="GameScreen" options={{
             headerShown: false
@@ -56,6 +61,7 @@ export default function RoutesStack({ }: Props) {
         </>
       ) : (
         <>
+        
           <Stack.Screen options={{
             headerShown: false
           }} name="Sign In" navigationKey='Sign In' component={SignIn} />
@@ -63,5 +69,6 @@ export default function RoutesStack({ }: Props) {
         </>
       )}
     </Stack.Navigator>
+   
   );
 }

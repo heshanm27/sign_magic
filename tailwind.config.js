@@ -19,7 +19,14 @@ module.exports = {
         'custom-env':'#B6C796',
         'custom-math':'#69DFE5',
         
-      
+      },
+      textColor:{
+        'custom-main': "#9297C8",
+        'custom-language': "#F7CB9A",
+        'custom-highLight':'#EE7036',
+        'custom-soialedu':'#F6C1A7',
+        'custom-env':'#B6C796',
+        'custom-math':'#69DFE5',
       }
     },
   },
