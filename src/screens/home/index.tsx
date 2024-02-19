@@ -8,6 +8,7 @@ import MathImg from '../../assets/math/home.png'
 import GenImg from '../../assets/social/home.png'
 
 import { horizontalScale, verticalScale } from '@src/utils/metrics';
+import LinearGradient from 'react-native-linear-gradient';
 
 type Props = {};
 interface HomeCard {
@@ -47,9 +48,12 @@ const Home = (props: Props) => {
 
 
   return (
-    <SafeAreaView className='flex flex-1   p-2 bg-white '>
-
-      <Header rightComponent={
+    <SafeAreaView className='flex flex-1 '>
+      <LinearGradient colors={['#22c1c3', '#fdbb2d']} style={{
+          flex: 1,
+      
+      }}>
+      {/* <Header rightComponent={
         <View className='flex flex-row items-center'>
           <Avatar
             size={'small'}
@@ -60,7 +64,7 @@ const Home = (props: Props) => {
           <Text className='text-white ml-2'>John Doe</Text>
         </View>
 
-      } />
+      } /> */}
       <View style={{
         flexDirection: 'row',
         alignItems: 'center',
@@ -68,7 +72,7 @@ const Home = (props: Props) => {
         padding: 16,
         margin: 8,
 
-        borderRadius: 24,
+        borderRadius: 36,
         shadowColor: "#000",
         shadowOffset: {
           width: 1,
@@ -97,18 +101,19 @@ const Home = (props: Props) => {
 
 
       <View>
-        <Text className='text-4xl font-bold font mt-5 p-2'>{t('lets-play')}</Text>
-        <Text className='text-1xl font-bold font mb-5 p-2'> {t('choose-category')}</Text>
+        <Text className='text-4xl font-bold font mt-2 p-1'>{t('lets-play')}</Text>
+        <Text className='text-1xl font-bold font mb-2 p-1'> {t('choose-category')}</Text>
       </View>
-      <View className='flex flex-row flex-wrap  p-2  rounded-3xl'>
+      <View className='flex flex-row flex-wrap    rounded-3xl'>
         <FlatList
           data={HomeCards}
-          renderItem={({ item }) => {
+          renderItem={({ item, index }) => {
             return (
-              <View style={{
+              <View key={`home-card${index}`} style={{
                 flex: 1,
                 margin: 8,
                 borderRadius: 16,
+                backgroundColor: item.color,
                 shadowColor: "#000",
                 shadowOffset: {
                   width: 2,
@@ -119,46 +124,52 @@ const Home = (props: Props) => {
                 elevation: 5,
 
               }}>
-                <View style={{
-                  flex: 1,
-                  borderTopEndRadius: 16,
-                  borderTopStartRadius: 16,
-                  padding: 16,
-                  backgroundColor: '#fff',
-                  alignItems: 'center',
-                }}>
-                  <Image source={item.image} style={{
-                    width: 115,
-                    height: 150,
-                    borderRadius: 4,
-                    resizeMode: 'contain'
-               
-                  }} />
+                <Pressable>
+                  <View style={{
+                    flex: 1,
+                    borderTopEndRadius: 16,
+                    borderTopStartRadius: 16,
+                    padding: 16,
+                    backgroundColor: item.color,
+                    alignItems: 'center',
+                  }}>
+                    <Image source={item.image} style={{
+                      width: 115,
+                      height: 150,
+                      borderRadius: 4,
+                      resizeMode: 'contain'
 
-                </View>
-                <View style={{
-                  flex: 1,
-                  borderBottomEndRadius: 16,
-                  borderBottomStartRadius: 16,
-                  backgroundColor: item.color,
-                  padding: 8,
-                }}>
-                  <Text
-                    style={{
+                    }} />
 
-                      fontWeight: 'bold',
-                      textAlign: 'center',
+                  </View>
+                  <View style={{
+                    flex: 1,
+                    borderBottomEndRadius: 16,
+                    borderBottomStartRadius: 16,
+                    backgroundColor: item.color,
+                    padding: 8,
+                  }}>
+                    <Text
+                      style={{
+                        fontSize: 16,
+                        fontWeight: 'bold',
+                        textAlign: 'center',
 
 
-                    }}
-                  >{item.title}</Text>
-                </View>
+                      }}
+                    >{item.title}</Text>
+                  </View>
+                </Pressable>
               </View>
             )
           }}
           numColumns={2}
         />
       </View>
+
+
+
+      </LinearGradient>
     </SafeAreaView>
   );
 };
