@@ -50,125 +50,112 @@ const Home = (props: Props) => {
   return (
     <SafeAreaView className='flex flex-1 '>
       <LinearGradient colors={['#22c1c3', '#fdbb2d']} style={{
-          flex: 1,
-      
+        flex: 1,
+
       }}>
-      {/* <Header rightComponent={
-        <View className='flex flex-row items-center'>
-          <Avatar
-            size={'small'}
-            rounded
-            icon={{ name: 'pencil', type: 'font-awesome' }}
-            containerStyle={{ backgroundColor: '#6733b9' }}
-          />
-          <Text className='text-white ml-2'>John Doe</Text>
-        </View>
+        <View className='flex flex-1 justify-around '>
 
-      } /> */}
-      <View style={{
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        padding: 16,
-        margin: 8,
+          <View>
+            <View style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              padding: 16,
+              margin: 8,
+              borderRadius: 36,
+              shadowColor: "#000",
+              shadowOffset: {
+                width: 1,
+                height: 1,
+              },
+              shadowOpacity: 1,
+              shadowRadius: 8,
+              elevation: 15, // For Android devices
+              backgroundColor: '#fff',
 
-        borderRadius: 36,
-        shadowColor: "#000",
-        shadowOffset: {
-          width: 1,
-          height: 1,
-        },
-        shadowOpacity: 1,
-        shadowRadius: 8,
-        elevation: 15, // For Android devices
-        backgroundColor: '#fff',
-
-      }}
-
-
-      >
-        <Avatar
-          size={'medium'}
-          rounded
-          icon={{ name: 'pencil', type: 'font-awesome' }}
-          containerStyle={{ backgroundColor: '#6733b9' }}
-        />
-        <View>
-          <Text className='text-lg font-semibold '>Exp Level</Text>
-          <Text className=''>Beginner</Text>
-        </View>
-      </View>
-
-
-      <View>
-        <Text className='text-4xl font-bold font mt-2 p-1'>{t('lets-play')}</Text>
-        <Text className='text-1xl font-bold font mb-2 p-1'> {t('choose-category')}</Text>
-      </View>
-      <View className='flex flex-row flex-wrap    rounded-3xl'>
-        <FlatList
-          data={HomeCards}
-          renderItem={({ item, index }) => {
-            return (
-              <View key={`home-card${index}`} style={{
-                flex: 1,
-                margin: 8,
-                borderRadius: 16,
-                backgroundColor: item.color,
-                shadowColor: "#000",
-                shadowOffset: {
-                  width: 2,
-                  height: 2,
-                },
-                shadowOpacity: 0.5, // Optional: Adjust the opacity of the shadow
-                shadowRadius: 4, // Optional: Adjust the size of the shadow
-                elevation: 5,
-
-              }}>
-                <Pressable>
-                  <View style={{
-                    flex: 1,
-                    borderTopEndRadius: 16,
-                    borderTopStartRadius: 16,
-                    padding: 16,
-                    backgroundColor: item.color,
-                    alignItems: 'center',
-                  }}>
-                    <Image source={item.image} style={{
-                      width: 115,
-                      height: 150,
-                      borderRadius: 4,
-                      resizeMode: 'contain'
-
-                    }} />
-
-                  </View>
-                  <View style={{
-                    flex: 1,
-                    borderBottomEndRadius: 16,
-                    borderBottomStartRadius: 16,
-                    backgroundColor: item.color,
-                    padding: 8,
-                  }}>
-                    <Text
-                      style={{
-                        fontSize: 16,
-                        fontWeight: 'bold',
-                        textAlign: 'center',
-
-
-                      }}
-                    >{item.title}</Text>
-                  </View>
-                </Pressable>
+            }}
+            >
+              <Avatar
+                size={'medium'}
+                rounded
+                icon={{ name: 'pencil', type: 'font-awesome' }}
+                containerStyle={{ backgroundColor: '#6733b9' }}
+              />
+              <View>
+                <Text className='text-lg font-semibold '>Exp Level</Text>
+                <Text className=''>Beginner</Text>
               </View>
-            )
-          }}
-          numColumns={2}
-        />
-      </View>
+            </View>
+            <Text className='text-4xl font-bold font mt-2 p-1'>{t('lets-play')}</Text>
+            <Text className='text-1xl font-bold font mb-2 p-1'> {t('choose-category')}</Text>
+          </View>
 
 
+          <View className='flex flex-row flex-wrap rounded-3xl'>
+            <FlatList
+              data={HomeCards}
+              renderItem={({ item, index }) => {
+                return (
+                  <View key={`home-card${index}`} style={{
+                    flex: 1,
+                    margin: 8,
+                    borderRadius: 16,
+                    backgroundColor: item.color,
+                    shadowColor: "#000",
+                    shadowOffset: {
+                      width: 2,
+                      height: 2,
+                    },
+                    shadowOpacity: 0.5, // Optional: Adjust the opacity of the shadow
+                    shadowRadius: 4, // Optional: Adjust the size of the shadow
+                    elevation: 5,
 
+                  }}>
+                    <Pressable>
+                      <View style={{
+                        flex: 1,
+                        borderTopEndRadius: 16,
+                        borderTopStartRadius: 16,
+                        padding: 16,
+                        backgroundColor: item.color,
+                        alignItems: 'center',
+                      }}>
+                        <Image source={item.image} style={{
+                          width: 115,
+                          height: 150,
+                          borderRadius: 4,
+                          resizeMode: 'contain'
+
+                        }} />
+
+                      </View>
+                      <View style={{
+                        flex: 1,
+                        borderBottomEndRadius: 16,
+                        borderBottomStartRadius: 16,
+                        backgroundColor: item.color,
+                        padding: 8,
+                      }}>
+                        <Text
+                          style={{
+                            fontSize: 16,
+                            fontWeight: 'bold',
+                            textAlign: 'center',
+
+
+                          }}
+                        >{item.title}</Text>
+                      </View>
+                    </Pressable>
+                  </View>
+                )
+              }}
+              numColumns={2}
+            />
+          </View>
+
+
+        </View>
       </LinearGradient>
     </SafeAreaView>
   );

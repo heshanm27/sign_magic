@@ -27,7 +27,8 @@ module.exports = {
         'custom-soialedu':'#F6C1A7',
         'custom-env':'#B6C796',
         'custom-math':'#69DFE5',
-      }
+      },
+      
     },
   },
   plugins: [],

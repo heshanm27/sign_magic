@@ -36,7 +36,7 @@ export default function RoutesStack({ }: Props) {
 
     
     <Stack.Navigator initialRouteName={true ? "Home" : "SignIn"}>
-      {true ? (
+      {false ? (
         <>
           <Stack.Screen  name="Home" component={Home} 
           options={{
