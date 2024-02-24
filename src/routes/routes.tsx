@@ -1,4 +1,4 @@
-import  { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Home from '@src/screens/home';
 import Notification from '@src/screens/notification';
@@ -10,7 +10,10 @@ import LanguageDifficulty from '@src/screens/language/difficulty';
 import LanguageLevel from '@src/screens/language/level';
 import GameScreen from '@src/screens/game';
 
-import {StatusBar} from 'react-native';
+import { StatusBar } from 'react-native';
+import EnvironmentDifficulty from '@src/screens/environment/difficulty';
+import EnvironmentLevel from '@src/screens/environment/level';
+import SocialEduLevel from '@src/screens/socialedu/level';
 type Props = {};
 
 export default function RoutesStack({ }: Props) {
@@ -34,41 +37,82 @@ export default function RoutesStack({ }: Props) {
   return (
 
 
-    
+
     <Stack.Navigator initialRouteName={true ? "Home" : "SignIn"}>
-      {false ? (
+      {true ? (
         <>
-          <Stack.Screen  name="Home" component={Home} 
-          options={{
-            headerShown: false,
-          }} />
+          <Stack.Screen name="Home" component={Home}
+            options={{
+              headerShown: false,
+            }} />
           <Stack.Screen name="Notification" component={Notification} />
           <Stack.Screen name="Profile" component={Profile} />
+
+          {/* Lanuage */}
           <Stack.Screen options={{
             headerShown: false
-          
+
           }} name="LanguageDifficulty" component={LanguageDifficulty} />
 
           <Stack.Screen name="LanguageLevel" options={{
             headerShown: false
-          
+
           }} component={LanguageLevel} />
+
+          {/* Math */}
+          <Stack.Screen options={{
+            headerShown: false
+
+          }} name="MathDifficulty" component={LanguageDifficulty} />
+
+          <Stack.Screen name="MathLevel" options={{
+            headerShown: false
+
+          }} component={LanguageLevel} />
+
+          {/* SocialEdu */}
+
+          <Stack.Screen options={{
+            headerShown: false
+
+          }} name="SocialEduDifficulty" component={LanguageDifficulty} />
+
+          <Stack.Screen name="SocialEduLevel" options={{
+            headerShown: false
+
+          }} component={SocialEduLevel} />
+
+          {/* Enviroment */}
+          <Stack.Screen options={{
+            headerShown: false
+
+          }} name="EnvironmentDifficulty" component={EnvironmentDifficulty} />
+
+          <Stack.Screen name="EnvironmentLevel" options={{
+            headerShown: false
+
+          }} component={EnvironmentLevel} />
 
           <Stack.Screen name="GameScreen" options={{
             headerShown: false
-          
+
           }} component={GameScreen} />
         </>
       ) : (
         <>
-        
+
           <Stack.Screen options={{
             headerShown: false
           }} name="Sign In" navigationKey='Sign In' component={SignIn} />
-          <Stack.Screen name="Sign Up" component={SignUp} />
+          <Stack.Screen
+            options={{
+              headerShown: false
+            }}
+
+            name="Sign Up" component={SignUp} />
         </>
       )}
     </Stack.Navigator>
-   
+
   );
 }

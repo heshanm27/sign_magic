@@ -1,6 +1,6 @@
 
 import { horizontalScale, moderateScale, verticalScale } from '@src/utils/metrics';
-import { View, Text, StyleSheet, SafeAreaView, Image,Pressable } from 'react-native'
+import { View, Text, StyleSheet, SafeAreaView, Image,Pressable,ScrollView,KeyboardAvoidingView } from 'react-native'
 import SignImg from '../../assets/math/login.png'
 import auth from '@react-native-firebase/auth';
 import { useNavigation } from '@react-navigation/native';
@@ -18,41 +18,56 @@ import { BUTTON, normalize } from '@src/theme/Typography';
 import SocialButton from '@src/components/buttons/social';
 import Icon from "react-native-vector-icons/Ionicons"
 import PaswordInput from '@src/components/input/password';
-
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import { useState } from 'react';
+import * as Yup from 'yup';
 const SignUp = () => {
 
   const navigation = useNavigation<any>();
-
+  const SignupSchema = Yup.object().shape({
+    firstName: Yup.string()
+      .min(2, 'Too Short!')
+      .max(50, 'Too Long!')
+      .required('Required'),
+    lastName: Yup.string()
+      .min(2, 'Too Short!')
+      .max(50, 'Too Long!')
+      .required('Required'),
+    email: Yup.string().email('Invalid email').required('Required'),
+  });
   return (
-    <SafeAreaView className='flex-1 items-center justify-start  bg-blue-200'>
-      <View style={Styles.topHeaderBg}>
-        <Image source={SignImg} style={{
-          width: 350 * Dimensions.RESPONSIVE_WIDTH,
-          height: 350 * Dimensions.RESPONSIVE_HEIGHT,
-          borderRadius: 4,
-          resizeMode: 'contain'
-
-        }} />
-      </View>
+    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+    <KeyboardAvoidingView className='flex-1 items-center justify-start'>  
       <View style={Styles.cardBg}>
         <View>
           <Text style={{
             fontWeight: "bold",
             fontSize: normalize(45)
-          }}>Login</Text>
-          <Text
-            style={{
-              fontWeight: "400",
-              fontSize: normalize(16)
-            }}
-          >Please sign in to continue</Text>
+          }}>SignUp</Text>
+             <Text style={{
+            fontWeight: "400",
+            fontSize: normalize(18)
+          }}>Fill the details</Text>
         </View>
         <Formik
           initialValues={{ email: '', password: '' }}
           onSubmit={values => console.log(values)}
+          validationSchema={SignupSchema}
         >
           {({ handleChange, handleBlur, handleSubmit, values }) => (
             <View>
+                <Input
+                label="First Name"
+                onBlur={() => handleBlur('firstname')}
+                onChange={() => handleChange('firstname')}
+                placeholder='Enter first name'
+              />
+                   <Input
+                label="Last Name"
+                onBlur={() => handleBlur('lastname')}
+                onChange={() => handleChange('lastname')}
+                placeholder='Enter last name '
+              />
               <Input
                 label="Email"
                 onBlur={() => handleBlur('email')}
@@ -65,7 +80,13 @@ const SignUp = () => {
                 onChange={() => handleChange('password')}
                 placeholder='Enter Password'
               />
-              <Button title="Sign In" onPress={() => handleSubmit()} />
+              <PaswordInput
+                label='Confirm Password'
+                onBlur={() => handleBlur('password')}
+                onChange={() => handleChange('password')}
+                placeholder='Enter Password'
+              />
+              <Button title="Sign Up" onPress={() => handleSubmit()} />
             </View>
           )}
         </Formik>
@@ -88,31 +109,24 @@ const SignUp = () => {
 
             <Text>Don't have a account? </Text>
             <Pressable onPress={() => navigation.navigate("Sign Up")}>
-            <Text className='font-semibold text-custom-main'>Sign Up</Text>
+            <Text className='font-semibold text-custom-main'>Sign In</Text>
           </Pressable>
 
           </View>
         </View>
       </View>
-    </SafeAreaView>
+    </KeyboardAvoidingView>
+    </ScrollView>
   )
 }
 
 
 const Styles = StyleSheet.create({
   cardBg: {
-    backgroundColor: "white",
-    shadowColor: Shadow.shadowColor,
-    shadowOffset: Shadow.shadowOffset,
-    shadowOpacity: Shadow.shadowOpacity,
-    shadowRadius: Shadow.shadowRadius,
-    display: "flex",
-    justifyContent:"space-evenly",
     width: "100%",
-    flex: 1,
-    borderTopLeftRadius: 25 * Dimensions.RESPONSIVE_WIDTH,
-    borderTopRightRadius: 25 * Dimensions.RESPONSIVE_WIDTH,
-    padding: Spacing.SMALL
+    padding:Spacing.SMALL,
+    flex:1,
+    justifyContent:"space-evenly"
   },
   topHeaderBg: {
     display: 'flex',

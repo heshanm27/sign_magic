@@ -9,16 +9,19 @@ import GenImg from '../../assets/social/home.png'
 
 import { horizontalScale, verticalScale } from '@src/utils/metrics';
 import LinearGradient from 'react-native-linear-gradient';
+import Spacing from '@src/theme/Spacing';
+import { useNavigation } from '@react-navigation/native';
 
 type Props = {};
 interface HomeCard {
   title: string,
   description: string,
   image: any,
-  color: string
+  color: string,
+  url:string
 }
 const Home = (props: Props) => {
-
+  const navigation = useNavigation<any>()
   const { t } = useTranslation()
 
   console.log
@@ -26,22 +29,26 @@ const Home = (props: Props) => {
     description: 'The idea with React Native Elements is more about component structure than actual design.',
     title: 'Sinhala',
     image: LangImg,
-    color: '#FEDB85'
+    color: '#FEDB85',
+    url:'LanguageDifficulty'
   }, {
     description: 'The idea with React Native Elements is more about component structure than actual design.',
     title: 'Mathematics',
     image: MathImg,
-    color: '#69DFE5'
+    color: '#69DFE5',
+    url:'MathDifficulty'
   }, {
     description: 'The idea with React Native Elements is more about component structure than actual design.',
     title: 'Env Studies',
     image: EnvImg,
-    color: '#E9FFB6'
+    color: '#E9FFB6',
+    url:'EnvironmentDifficulty'
   }, {
     description: 'The idea with React Native Elements is more about component structure than actual design.',
     title: 'Gen Skills',
     image: GenImg,
-    color: "#FEB3C5"
+    color: "#FEB3C5",
+    url:'SocialEduDifficulty'
   }]
 
 
@@ -49,13 +56,16 @@ const Home = (props: Props) => {
 
   return (
     <SafeAreaView className='flex flex-1 '>
-      <LinearGradient colors={['#22c1c3', '#fdbb2d']} style={{
+      <LinearGradient colors={['#22c1c3', '#fdbb2d']} 
+      style={{
+        display:"flex",
         flex: 1,
+        flexDirection:"column",
+        justifyContent:"space-evenly",
+        padding:Spacing.MEDIUM
 
       }}>
-        <View className='flex flex-1 justify-around '>
-
-          <View>
+    
             <View style={{
               flexDirection: 'row',
               alignItems: 'center',
@@ -86,12 +96,11 @@ const Home = (props: Props) => {
                 <Text className=''>Beginner</Text>
               </View>
             </View>
+            <View>
             <Text className='text-4xl font-bold font mt-2 p-1'>{t('lets-play')}</Text>
             <Text className='text-1xl font-bold font mb-2 p-1'> {t('choose-category')}</Text>
-          </View>
-
-
-          <View className='flex flex-row flex-wrap rounded-3xl'>
+            </View>
+            <View>
             <FlatList
               data={HomeCards}
               renderItem={({ item, index }) => {
@@ -111,7 +120,7 @@ const Home = (props: Props) => {
                     elevation: 5,
 
                   }}>
-                    <Pressable>
+                    <Pressable onPress={()=>navigation.navigate(item.url)}>
                       <View style={{
                         flex: 1,
                         borderTopEndRadius: 16,
@@ -151,11 +160,8 @@ const Home = (props: Props) => {
                 )
               }}
               numColumns={2}
-            />
-          </View>
-
-
-        </View>
+            />    
+            </View>
       </LinearGradient>
     </SafeAreaView>
   );
