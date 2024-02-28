@@ -1,13 +1,13 @@
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet,Image } from 'react-native'
 
-
+import GenImg from '@src/assets/env/home.png'
 export default function index() {
   return (
     <View style={styles.vectorParent}>
     <Image
       style={[styles.groupChild, styles.groupLayout]}
       resizeMode="cover"
-      source={require("../assets/rectangle-41.png")}
+      source={GenImg}
     />
     <Text style={[styles.completed8, styles.textTypo]}>
       Completed : 8 / 10
@@ -27,7 +27,7 @@ export default function index() {
 
 const styles = StyleSheet.create({
     groupLayout: {
-      borderRadius: Border.br_11xl,
+      borderRadius: 10,
       position: "absolute",
     },
     textTypo: {
@@ -44,19 +44,17 @@ const styles = StyleSheet.create({
     completed8: {
       top: 63,
       color: "#5a3518",
-      fontFamily: FontFamily.jostExtraBold,
       textAlign: "left",
       fontWeight: "800",
-      fontSize: FontSize.size_smi,
+      fontSize: 10,
       left: 149,
     },
     score173: {
       top: 86,
-      color: Color.colorSaddlebrown_100,
-      fontFamily: FontFamily.jostExtraBold,
+      color: "red",
       textAlign: "left",
       fontWeight: "800",
-      fontSize: FontSize.size_smi,
+      fontSize: 10,
       left: 149,
     },
     groupItem: {
@@ -64,7 +62,7 @@ const styles = StyleSheet.create({
       left: -5,
       backgroundColor: "#ffe5ec",
       borderStyle: "solid",
-      borderColor: Color.colorCrimson,
+      borderColor: "red",
       borderWidth: 5,
       width: 127,
       height: 144,
@@ -73,8 +71,8 @@ const styles = StyleSheet.create({
       top: 15,
       left: 22,
       fontSize: 29,
-      color: Color.colorCrimson,
-      fontFamily: FontFamily.jostExtraBold,
+      color: "red",
+  
       textAlign: "left",
       fontWeight: "800",
     },
@@ -82,7 +80,7 @@ const styles = StyleSheet.create({
       top: 58,
       left: 43,
       fontSize: 47,
-      fontFamily: FontFamily.latoBlack,
+
       color: "#fe80a0",
       textAlign: "left",
       fontWeight: "800",
@@ -96,9 +94,9 @@ const styles = StyleSheet.create({
     },
     clickHereTo: {
       top: 30,
-      fontSize: FontSize.size_xl,
-      color: Color.colorDimgray,
-      fontFamily: FontFamily.jostExtraBold,
+      fontSize: 10,
+      color: "red",
+
       textAlign: "left",
       fontWeight: "800",
       left: 149,
