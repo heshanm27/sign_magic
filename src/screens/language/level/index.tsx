@@ -1,10 +1,14 @@
-import { View, Text } from 'react-native'
+import { View, Text,ActivityIndicator,FlatList } from 'react-native'
 import {useState,useEffect} from 'react'
 import firestore from '@react-native-firebase/firestore';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import Spacing from '@src/theme/Spacing';
+import LevelCard from '@src/components/card/level';
+import Dimensions from '@src/theme/Dimensions';
 type Props = {}
 
 const LanguageLevel = (props: Props) => {
-
+  const [isLoading, setIsLoading] = useState<boolean>(true);
    const [questions, setQuestions] = useState<any>([]);
 
     async function getAllQuestions() {
@@ -48,6 +52,7 @@ const LanguageLevel = (props: Props) => {
            const questions = await getAllQuestions();
            const updatedQuestion =  await getUserGameHistoryOfQuestion(questions);
             setQuestions(updatedQuestion);
+            setIsLoading(false)
         };
 
         fetchData();
@@ -56,22 +61,33 @@ const LanguageLevel = (props: Props) => {
     console.log(questions)
 
   return (
-    <View>
-      <Text>index</Text>
-      {
-        questions.map((question: any) => {
-          return (
-            <View key={question.id}>
-              <Text>{question.id}</Text>
-              <Text>{question.question}</Text>
-              <Text>{question.answer}</Text>
-              <Text>{question.completed}</Text>
-              <Text>{question.score}</Text>
-            </View>
-          )
-        })
-      }
-    </View>
+     <SafeAreaView className="flex flex-1 flex-grow">
+     <View className="bg-custom-language flex flex-1 p-3 ">
+       {isLoading ? (
+         <ActivityIndicator size="large" color="#0000ff" />
+       ) : (
+         <View>
+           <View className="mb-5">
+             <Text className="text-4xl font-bold">Select Difficulty </Text>
+             <Text className="text-1xl font-medium">
+               Select a difficulty to start playing
+             </Text>
+           </View>
+
+           <FlatList
+             contentContainerStyle={{ gap: Spacing.MEDIUM, flexGrow: 1 ,paddingBottom:100 * Dimensions.RESPONSIVE_HEIGHT }}
+             data={questions}
+             renderItem={({ index,item }) => {
+               console.log(item)
+               return <LevelCard 
+              
+               />;
+             }}
+           />
+          </View>
+       )}
+     </View>
+   </SafeAreaView>
   )
 }
 

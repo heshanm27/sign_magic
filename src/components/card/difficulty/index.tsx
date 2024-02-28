@@ -1,65 +1,79 @@
 
-import { StyleSheet, Text, View, Image } from 'react-native'
-import bg from './../../../assets/img/Mathematics.png'
-import GenImg from '@src/assets/env/home.png'
+import { StyleSheet, Text, View, Image, Pressable } from 'react-native'
+import Spacing from '@src/theme/Spacing';
+import Dimensions from '@src/theme/Dimensions';
+import * as changeCase from "change-case";
+import { useNavigation } from '@react-navigation/native';
 type Props = {
   title: string;
   completed: number;
   total: number;
   uri: string;
+  url:string
 }
 
 
-export default function DifficultyLevelCard({ title, completed, total, uri }: Props) {
+export default function DifficultyLevelCard({ title, completed, total, uri,url }: Props) {
+ const navigate = useNavigation<any>()
+ 
   return (
+    <Pressable onPress={()=>navigate.navigate(url,{
+        id:title
+    })}>
     <View
     style={{
       display:"flex",
       backgroundColor:"#fff3bf",
-      padding:10,
+      padding:Spacing.EXTRA_SMALL,
       borderRadius:40
     }}
-    
     >
     <View style={styles.card}>
-      <View style={{
-        width: 100,
-        height: 100
-      }}>
-        <Image source={GenImg} style={{
-          width: 100,
-          height: 100,
+      <View >
+        <Image source={{
+          uri:uri
+        }} style={{
+          width: 150*Dimensions.RESPONSIVE_WIDTH,
+          height: 150* Dimensions.RESPONSIVE_WIDTH,
           borderRadius: 4,
           resizeMode: 'contain'
 
         }} />
       </View>
-      <View>
-        <Text style={{
-          fontSize: 10,
-          color: "white"
-        }}>
-          Completed : 8 / 10
+      <View 
+      style={{
+        display:"flex",
+        flexDirection:"column",
+        justifyContent:"center",
+        alignContent:"center",
+      }}
+      >
+      <Text 
+      style={{
+        textAlign:"left",
+        fontWeight:"bold",
+        fontSize:30,
+        color:"#88684F"
+      }}
+      
+      >
+          {changeCase.capitalCase(title)}
         </Text>
-        <Text style={{
-          fontSize: 10,
-          color: "white"
-        }}>Beginner</Text>
-      </View>
-      <View style={[styles.groupChildPosition]}>
-        {/* <Image
-        style={[styles.groupChild, styles.groupPosition]}
-        resizeMode="cover"
-        source={GenImg}
-      /> */}
-        {/* 
-      <View style={[styles.rectangleWrapper, styles.vectorParentPosition]}>
-        <View style={[styles.groupItem, styles.groupPosition]} />
-      </View> */}
-
+        <Text 
+     style={{
+      textAlign:"left",
+      fontWeight:"bold",
+      fontSize:28,
+      color:"#48280F"
+    }}
+      >
+          Completed : {completed} / {total}
+        </Text>
+        
       </View>
     </View>
     </View>
+    </Pressable>
   )
 }
 
@@ -69,72 +83,16 @@ const styles = StyleSheet.create({
     borderRadius: 40,
     borderWidth: 10,
     borderColor: "#ffa431",
-    padding: 20,
+    padding: Spacing.SMALL,
     flexDirection: "row",
-    justifyContent: "space-evenly"
+    justifyContent: "space-around"
 
   },
-  groupChildPosition: {
-    // left: 0,
-    // marginTop: -76,
-    // height: 152,
-    // width: 346,
-  },
-  // groupPosition: {
-  //   borderRadius: 20,
-  //   top: "50%",
-  //   position: "absolute",
-  // },
   beginnerTypo: {
     textAlign: "left",
     fontWeight: "800",
     top: "50%",
     position: "absolute",
   },
-  // vectorParentPosition: {
-  //   top: "50%",
-  //   position: "absolute",
-  // },
-  // groupChild: {
-  //   left: 0,
-  //   marginTop: -76,
-  //   height: 152,
-  //   width: 346,
-  // },
-  // completed8: {
-  //   // marginTop: -13,
-  //   // left: 149,
-  //   // fontSize: 13,
-  //   // color: "#48280f",
-  // },
-  // groupItem: {
-  //   marginTop: -65,
-  //   left: -5,
-  //   backgroundColor: "#fff3bf",
-  //   borderStyle: "solid",
-  //   borderColor: "#ffa431",
-  //   borderWidth: 5,
-  //   width: 338,
-  //   height: 130,
-  // },
-  // rectangleWrapper: {
-  //   // marginTop: -59,
-  //   // left: 9,
-  //   // width: 328,
-  //   // height: 120,
-  // },
-  // beginner: {
-  //   // marginTop: -28,
-  //   // left: 166,
-  //   // fontSize: 20,
-  //   // color: "#88684f",
-  // },
-  // vectorParent: {
-  //   top: "50%",
-  //   position: "absolute",
-  // },
-  // groupParent: {
-  //   height: 152,
-  //   width: 346,
-  // },
+
 });

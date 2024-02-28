@@ -6,7 +6,7 @@ export default {
 
   SUB_MARGIN: -9 * Dimensions.RESPONSIVE_WIDTH,
   MAIN_MARGIN: 24 * Dimensions.RESPONSIVE_WIDTH,
-
+  EXTRA_SMALL:10 * Dimensions.RESPONSIVE_WIDTH,
   SMALL: 25 * Dimensions.RESPONSIVE_WIDTH,
   LARGE: 34 * Dimensions.RESPONSIVE_WIDTH,
   MEDIUM: 26 * Dimensions.RESPONSIVE_WIDTH,

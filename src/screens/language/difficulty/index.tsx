@@ -1,9 +1,17 @@
-import { View, Text, ActivityIndicator, ScrollView } from "react-native";
+import {
+  View,
+  Text,
+  ActivityIndicator,
+  ScrollView,
+  FlatList,
+} from "react-native";
 import firestore from "@react-native-firebase/firestore";
 import { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import DifficultyLevelCard from "@src/components/card/difficulty";
 import { Image } from "react-native-svg";
+import Spacing from "@src/theme/Spacing";
+import Dimensions from "@src/theme/Dimensions";
 
 type Props = {};
 
@@ -67,35 +75,34 @@ const LanguageDifficulty = (props: Props) => {
   }, []);
 
   return (
-    <SafeAreaView className="flex flex-1">
+    <SafeAreaView className="flex flex-1 flex-grow">
       <View className="bg-custom-language flex flex-1 p-3 ">
         {isLoading ? (
           <ActivityIndicator size="large" color="#0000ff" />
         ) : (
-          <ScrollView>
-            <View>
+          <View>
+            <View className="mb-5">
               <Text className="text-4xl font-bold">Select Difficulty </Text>
               <Text className="text-1xl font-medium">
-                {" "}
                 Select a difficulty to start playing
               </Text>
-
-              {/* {difficulty.map((item: any, index: number) => {
-                return (
-                  <View
-                    key={`card-${index}`}
-                    className="bg-white rounded-md p-3 m-3"
-                  >
-                    <Image href={{ uri: item.img }} width={100} height={100} />
-                    <Text>{item.id}</Text>
-                    <Text>{item.size}</Text>
-                    <Text>{item.completedQuestions}</Text>
-                  </View>
-                );
-              })} */}
-              <DifficultyLevelCard title="Beginner" completed={10}  total={20}  uri="w"/>
             </View>
-          </ScrollView>
+
+            <FlatList
+              contentContainerStyle={{ gap: Spacing.MEDIUM, flexGrow: 1 ,paddingBottom:100 * Dimensions.RESPONSIVE_HEIGHT }}
+              data={difficulty}
+              renderItem={({ index,item }) => {
+                console.log(item)
+                return <DifficultyLevelCard 
+                completed={difficulty?.completedQuestions ?? 0}
+                title={item?.id}
+                uri={item?.img}
+                total={item?.size}
+                url="LanguageLevel"
+                />;
+              }}
+            />
+           </View>
         )}
       </View>
     </SafeAreaView>
