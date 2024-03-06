@@ -1,10 +1,99 @@
-import { View, Text } from 'react-native'
-import React from 'react'
 
-export default function EnvironmentLevel() {
+
+
+import { View, Text,ActivityIndicator,FlatList } from 'react-native'
+import {useState,useEffect} from 'react'
+import firestore from '@react-native-firebase/firestore';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import Spacing from '@src/theme/Spacing';
+import LevelCard from '@src/components/card/level';
+import Dimensions from '@src/theme/Dimensions';
+type Props = {}
+
+const EnvironmentLevel = (props: Props) => {
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+   const [questions, setQuestions] = useState<any>([]);
+
+    async function getAllQuestions() {
+        try {
+            const questionQuerySnapshot = await firestore().collection('language').doc('beginner').collection('question').get();
+            const questionData = questionQuerySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+            return questionData;
+        } catch (error) {
+            console.error('Error fetching questions:', error);
+        }
+    }
+
+    async function getUserGameHistoryOfQuestion(questions:any) {
+        try {
+
+            // Get user game history for the user
+            const userGameHistoryQuerySnapshot = await firestore().collection('userGameHistory').doc('69eXeT4xIUe2iIVu06ODOlPGJyL2').collection('userGameHistory').get();
+            const updatedQuestions = [...questions];
+
+
+            // Update completed and score in updatedQuestions if the question exists
+            userGameHistoryQuerySnapshot.forEach((doc) => {
+                const data = doc.data();
+                const questionId = doc.id;
+                const questionIndex = updatedQuestions.findIndex((question: any) =>  question.id === questionId);
+                if (questionIndex !== -1) {
+                    updatedQuestions[questionIndex].completed = true;
+                    updatedQuestions[questionIndex].score = data.score;
+                }
+            });
+
+            return updatedQuestions;
+
+        } catch (error) {
+            console.error('Error fetching user game history:', error);
+        }
+    }
+
+    useEffect(() => {
+        const fetchData = async () => {
+           const questions = await getAllQuestions();
+           const updatedQuestion =  await getUserGameHistoryOfQuestion(questions);
+            setQuestions(updatedQuestion);
+            setIsLoading(false)
+        };
+
+        fetchData();
+    }, []);
+
+    console.log(questions)
+
   return (
-    <View>
-      <Text>index</Text>
-    </View>
+     <SafeAreaView className="flex flex-1 flex-grow">
+     <View className="bg-custom-language flex flex-1 p-3 ">
+       {isLoading ? (
+         <ActivityIndicator size="large" color="#0000ff" />
+       ) : (
+         <View>
+           <View className="mb-5">
+             <Text className="text-4xl font-bold">Select Difficulty </Text>
+             <Text className="text-1xl font-medium">
+               Select a difficulty to start playing
+             </Text>
+           </View>
+
+           <FlatList
+             contentContainerStyle={{ gap: Spacing.MEDIUM, flexGrow: 1 ,paddingBottom:100 * Dimensions.RESPONSIVE_HEIGHT }}
+             data={questions}
+             renderItem={({ index,item }) => {
+               console.log(item)
+               return <LevelCard 
+              title={item?.qNo}
+              url='LanguageGame'
+               
+               />;
+             }}
+           />
+          </View>
+       )}
+     </View>
+   </SafeAreaView>
   )
 }
+
+export default EnvironmentLevel

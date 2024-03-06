@@ -1,25 +1,29 @@
 
 import { StyleSheet, Text, View, Image, Pressable } from 'react-native'
 import Spacing from '@src/theme/Spacing';
-import Dimensions from '@src/theme/Dimensions';
-import * as changeCase from "change-case";
 import { useNavigation } from '@react-navigation/native';
-type Props = {
+import { normalize } from '@src/theme/Typography';
 
+
+type Props = {
+  title:string,
+  url:string,
 }
 
 
-export default function LevelCard({ }: Props) {
+export default function LevelCard({
+  title,url
+ }: Props) {
   const navigate = useNavigation<any>()
 
   return (
-    <Pressable >
+    <Pressable  onPress={()=>navigate.navigate(url)}>
       <View
         style={{
           display: "flex",
           backgroundColor: "#fff3bf",
           padding: Spacing.EXTRA_SMALL,
-          borderRadius: 40
+          borderRadius: Spacing.LARGE
         }}
       >
         <View style={{
@@ -29,8 +33,8 @@ export default function LevelCard({ }: Props) {
           <View 
           style={{
             display: "flex",
-            borderRadius: 40,
-            borderWidth: 10,
+            borderRadius: Spacing.SMALL,
+            borderWidth: 8,
             borderColor: "#ffa431",
             padding: Spacing.SMALL,
             flexDirection: "column",
@@ -42,7 +46,7 @@ export default function LevelCard({ }: Props) {
                  style={{
                   textAlign: "center",
                   fontWeight: "bold",
-                  fontSize: 50,
+                  fontSize: normalize(20),
                   color: "#48280F"
                 }}
             >Level</Text>
@@ -50,10 +54,10 @@ export default function LevelCard({ }: Props) {
                  style={{
                   textAlign: "center",
                   fontWeight: "bold",
-                  fontSize: 90,
+                  fontSize: normalize(40),
                   color: "#48280F"
                 }}
-            >1</Text>
+            >{title}</Text>
           </View>
           <View
             style={{
@@ -68,11 +72,11 @@ export default function LevelCard({ }: Props) {
               style={{
                 textAlign: "right",
                 fontWeight: "bold",
-                fontSize: 28,
+                fontSize: normalize(20),
                 color: "#48280F"
               }}
             >
-            Click Here To Play
+            Click here to play
             </Text>
 
           </View>

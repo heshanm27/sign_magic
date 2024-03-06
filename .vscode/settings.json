@@ -1,5 +1,5 @@
 {
-  "GitHooks.hooksDirectory": "d:\\vsWorkshop\\ResearchApp\\sign_magic\\.git\\hooks",
+  "GitHooks.hooksDirectory": "/Users/heshanmadhuranga/Documents/GitHub/sign_magic/.git/hooks",
   "java.configuration.updateBuildConfiguration": "interactive",
   "typescript.tsdk": "node_modules\\typescript\\lib"
 }

@@ -80,7 +80,9 @@ const LanguageLevel = (props: Props) => {
              renderItem={({ index,item }) => {
                console.log(item)
                return <LevelCard 
-              
+              title={item?.qNo}
+              url='LanguageGame'
+               
                />;
              }}
            />
