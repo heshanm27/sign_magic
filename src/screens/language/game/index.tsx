@@ -21,6 +21,23 @@ const LanuageGameScreen = (props: Props) => {
   const device = useCameraDevice("front");
   const { hasPermission, requestPermission } = useCameraPermission();
 
+  const getRealTimeFeed = async () => {
+
+    try{
+    if (camera.current) {
+      console.log('startRecording')
+      camera.current.startRecording({
+        onRecordingFinished: (video) => console.log(video),
+        onRecordingError: (error) => console.error(error)
+      })
+    } 
+
+  }catch(e){
+    console.log(e)
+  }
+  
+  }
+
   useEffect(() => {
     if (!hasPermission) {
       requestPermission();
@@ -138,6 +155,18 @@ const LanuageGameScreen = (props: Props) => {
     //   }
     // }, [camera, socket]);
 
+    useEffect(()=>{
+      getRealTimeFeed()
+
+
+      setTimeout(() => {
+        if (camera.current) {
+          console.log('stopRecording')
+          camera.current.stopRecording()
+        }
+      }, 5000);
+    },[])
+
   return (
     <SafeAreaView className="flex flex-1">
       <View className="flex flex-1 bg-custom-highLight">
@@ -151,6 +180,7 @@ const LanuageGameScreen = (props: Props) => {
             style={styles.camera}
             device={device}
             isActive={true}
+            video={true}
           />
         </View>
         {/* <View style={{ position: 'absolute', top: 10, alignSelf: 'center' }}>
