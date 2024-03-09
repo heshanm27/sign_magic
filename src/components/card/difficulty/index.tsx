@@ -12,10 +12,12 @@ type Props = {
   url:string
   isFirst?: boolean;
   isLast?: boolean;
+  backgroundColor?: string;
+  borderColor?: string;
 }
 
 
-export default function DifficultyLevelCard({ title, completed, total, uri,url ,isFirst,isLast}: Props) {
+export default function DifficultyLevelCard({ backgroundColor,borderColor,title, completed, total, uri,url ,isFirst,isLast}: Props) {
  const navigate = useNavigation<any>()
  
   return (
@@ -25,14 +27,22 @@ export default function DifficultyLevelCard({ title, completed, total, uri,url ,
     <View
     style={{
       display:"flex",
-      backgroundColor:"#fff3bf",
+      backgroundColor:backgroundColor,
       padding:Spacing.EXTRA_SMALL,
       borderRadius:40,
       marginTop:isFirst || isLast ?  Spacing.SMALL: 0,
       marginBottom:isFirst || isLast ?  Spacing.SMALL: 0,
     }}
     >
-    <View style={styles.card}>
+    <View style={{
+          display: "flex",
+          borderRadius: 40,
+          borderWidth: 10,
+          borderColor: borderColor,
+          padding: Spacing.SMALL,
+          flexDirection: "row",
+          justifyContent: "space-around"
+    }}>
       <View >
         <Image source={{
           uri:uri
@@ -57,7 +67,7 @@ export default function DifficultyLevelCard({ title, completed, total, uri,url ,
         textAlign:"left",
         fontWeight:"bold",
         fontSize:30,
-        color:"#88684F"
+        color:borderColor
       }}
       
       >
@@ -83,13 +93,7 @@ export default function DifficultyLevelCard({ title, completed, total, uri,url ,
 
 const styles = StyleSheet.create({
   card: {
-    display: "flex",
-    borderRadius: 40,
-    borderWidth: 10,
-    borderColor: "#ffa431",
-    padding: Spacing.SMALL,
-    flexDirection: "row",
-    justifyContent: "space-around"
+
 
   },
   beginnerTypo: {

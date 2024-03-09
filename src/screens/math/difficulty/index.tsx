@@ -12,6 +12,7 @@ import DifficultyLevelCard from "@src/components/card/difficulty";
 import { Image } from "react-native-svg";
 import Spacing from "@src/theme/Spacing";
 import Dimensions from "@src/theme/Dimensions";
+import LinearGradient from "react-native-linear-gradient";
 
 type Props = {};
 
@@ -76,7 +77,13 @@ const MathDifficulty = (props: Props) => {
 
   return (
     <SafeAreaView className="flex flex-1 flex-grow">
-      <View className="bg-custom-language flex flex-1 p-3 ">
+      <LinearGradient style={{
+        flex:1,
+      padding:Spacing.MEDIUM
+      }}
+      colors={["#00b5ff","#84daf3"]}
+      >
+     
         {isLoading ? (
           <ActivityIndicator size="large" color="#0000ff" />
         ) : (
@@ -99,12 +106,15 @@ const MathDifficulty = (props: Props) => {
                 uri={item?.img}
                 total={item?.size}
                 url="LanguageLevel"
+                backgroundColor="#00b5ff"
+                borderColor="#84daf3"
                 />;
               }}
             />
            </View>
         )}
-      </View>
+
+      </LinearGradient>
     </SafeAreaView>
   );
 };
