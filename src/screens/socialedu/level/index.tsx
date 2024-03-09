@@ -7,6 +7,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Spacing from '@src/theme/Spacing';
 import LevelCard from '@src/components/card/level';
 import Dimensions from '@src/theme/Dimensions';
+import LinearGradient from 'react-native-linear-gradient';
 type Props = {}
 
 const SocialEduLevel = (props: Props) => {
@@ -64,7 +65,16 @@ const SocialEduLevel = (props: Props) => {
 
   return (
      <SafeAreaView className="flex flex-1 flex-grow">
-     <View className="bg-custom-language flex flex-1 p-3 ">
+         <LinearGradient
+      style={{
+        flex:1,
+        padding:Spacing.MEDIUM
+      }}
+      colors={["#ff0000", "#f38484"]}
+      >
+
+
+     
        {isLoading ? (
          <ActivityIndicator size="large" color="#0000ff" />
        ) : (
@@ -84,13 +94,18 @@ const SocialEduLevel = (props: Props) => {
                return <LevelCard 
               title={item?.qNo}
               url='LanguageGame'
+              backgroundColor="#f38484"
+                borderColor="#ff0000"
+                isFirst={index === 0}
+                isLast={index === questions.length - 1}
                
                />;
              }}
            />
           </View>
        )}
-     </View>
+
+     </LinearGradient>
    </SafeAreaView>
   )
 }

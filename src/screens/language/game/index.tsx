@@ -14,6 +14,8 @@ import {
 } from "react-native-vision-camera";
 import { useRef, useEffect, useState } from "react";
 import Dimensions from "@src/theme/Dimensions";
+import LinearGradient from "react-native-linear-gradient";
+import Spacing from "@src/theme/Spacing";
 type Props = {};
 
 const LanuageGameScreen = (props: Props) => {
@@ -169,7 +171,13 @@ const LanuageGameScreen = (props: Props) => {
 
   return (
     <SafeAreaView className="flex flex-1">
-      <View className="flex flex-1 bg-custom-highLight">
+        <LinearGradient style={{
+        flex:1,
+        padding:Spacing.MEDIUM
+      }}
+      colors={["#ffc400","#f3df84"]}
+      >
+
 
         <View style={{ position: 'absolute', left: 10, top: 10 }}>
           <Button title="Back" onPress={() => {}} />
@@ -208,7 +216,8 @@ const LanuageGameScreen = (props: Props) => {
             මේ අකුර කුමක්ද?
           </Text>
         </View>
-      </View>
+     
+      </LinearGradient>
     </SafeAreaView>
   );
 };

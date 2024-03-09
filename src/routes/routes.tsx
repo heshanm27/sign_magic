@@ -5,7 +5,6 @@ import Notification from "@src/screens/notification";
 import Profile from "@src/screens/profile";
 import auth from "@react-native-firebase/auth";
 import SignIn from "@src/screens/sign-in";
-import SignUp from "@src/screens/sign-up";
 import LanguageDifficulty from "@src/screens/language/difficulty";
 import LanguageLevel from "@src/screens/language/level";
 import GameScreen from "@src/screens/game";
@@ -22,6 +21,7 @@ import EnvironmentGameScreen from "@src/screens/environment/game";
 import OnboardingScreen from "@src/screens/on-boarding";
 
 import { useInitStore } from "@src/zustaned/init/store";
+import MyDrawer from "./drawer";
 type Props = {};
 
 export default function RoutesStack({}: Props) {
@@ -47,7 +47,13 @@ export default function RoutesStack({}: Props) {
   const Stack = createNativeStackNavigator();
 
   return (
-    <Stack.Navigator initialRouteName={user ? "Home" : "signin"}>
+    <Stack.Navigator
+    screenOptions={{
+      headerShown: false,
+    
+    }}
+    initialRouteName={user ? "Home" : "signin"}>
+      <Stack.Screen name="drawermenu" component={MyDrawer} />
       {user ? (
         <>
           <Stack.Screen

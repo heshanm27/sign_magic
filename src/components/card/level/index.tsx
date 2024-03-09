@@ -1,89 +1,74 @@
-
-import { StyleSheet, Text, View, Image, Pressable } from 'react-native'
-import Spacing from '@src/theme/Spacing';
-import { useNavigation } from '@react-navigation/native';
-import { normalize } from '@src/theme/Typography';
-
+import { StyleSheet, Text, View, Image, Pressable } from "react-native";
+import Spacing from "@src/theme/Spacing";
+import { useNavigation } from "@react-navigation/native";
+import { normalize } from "@src/theme/Typography";
 
 type Props = {
-  title:string,
-  url:string,
-}
-
+  title: string;
+  url: string;
+  backgroundColor?: string;
+  borderColor?: string;
+  isFirst?: boolean;
+  isLast?: boolean;
+};
 
 export default function LevelCard({
-  title,url
- }: Props) {
-  const navigate = useNavigation<any>()
+  title,
+  url,
+  backgroundColor = "#fff3bf",
+  borderColor = "#ffa431",
+  isFirst = false,
+  isLast = false,
+}: Props) {
+  const navigate = useNavigation<any>();
 
   return (
-    <Pressable  onPress={()=>navigate.navigate(url)}>
+    <Pressable onPress={() => navigate.navigate(url)}>
       <View
         style={{
           display: "flex",
-          backgroundColor: "#fff3bf",
+          backgroundColor: backgroundColor,
           padding: Spacing.EXTRA_SMALL,
-          borderRadius: Spacing.LARGE
+          borderRadius: 10,
+          marginTop: isFirst || isLast ? Spacing.SMALL : 0,
+          marginBottom: isFirst || isLast ? Spacing.SMALL : 0,
         }}
       >
-        <View style={{
-          display:"flex",flexDirection:"row",
-          justifyContent:"space-evenly"
-        }}>
-          <View 
+        <View
           style={{
             display: "flex",
-            borderRadius: Spacing.SMALL,
-            borderWidth: 8,
-            borderColor: "#ffa431",
+            borderRadius: 10,
+            borderWidth: 10,
+            borderColor: borderColor,
             padding: Spacing.SMALL,
-            flexDirection: "column",
+            flexDirection: "row",
             justifyContent: "space-around",
-           
           }}
-          >
-            <Text
-                 style={{
-                  textAlign: "center",
-                  fontWeight: "bold",
-                  fontSize: normalize(20),
-                  color: "#48280F"
-                }}
-            >Level</Text>
-            <Text
-                 style={{
-                  textAlign: "center",
-                  fontWeight: "bold",
-                  fontSize: normalize(40),
-                  color: "#48280F"
-                }}
-            >{title}</Text>
-          </View>
-          <View
+        >
+          <Text
             style={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              alignContent: "flex-end",
+              textAlign: "center",
+              fontWeight: "bold",
+              fontSize: normalize(40),
+              color: "#48280F",
             }}
           >
-
-            <Text
-              style={{
-                textAlign: "right",
-                fontWeight: "bold",
-                fontSize: normalize(20),
-                color: "#48280F"
-              }}
-            >
-            Click here to play
-            </Text>
-
-          </View>
+            Level
+          </Text>
+          <Text
+            style={{
+              textAlign: "center",
+              fontWeight: "bold",
+              fontSize: normalize(50),
+              color: "#48280F",
+            }}
+          >
+            {title}
+          </Text>
         </View>
       </View>
     </Pressable>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -94,8 +79,7 @@ const styles = StyleSheet.create({
     borderColor: "#ffa431",
     padding: Spacing.SMALL,
     flexDirection: "row",
-    justifyContent: "space-around"
-
+    justifyContent: "space-around",
   },
   beginnerTypo: {
     textAlign: "left",
@@ -103,5 +87,4 @@ const styles = StyleSheet.create({
     top: "50%",
     position: "absolute",
   },
-
 });

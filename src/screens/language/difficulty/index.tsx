@@ -13,7 +13,8 @@ import { Image } from "react-native-svg";
 import Spacing from "@src/theme/Spacing";
 import Dimensions from "@src/theme/Dimensions";
 import LinearGradient from "react-native-linear-gradient";
-
+import DifficultiesSkelton from "@src/components/skelton/difficulties";
+import auth from "@react-native-firebase/auth";
 type Props = {};
 
 const LanguageDifficulty = (props: Props) => {
@@ -46,7 +47,7 @@ const LanguageDifficulty = (props: Props) => {
   async function getUserGameHistory(difficultyData: any) {
     const userGameHistoryQuerySnapshot = await firestore()
       .collection("userGameHistory")
-      .doc("69eXeT4xIUe2iIVu06ODOlPGJyL2")
+      .doc(auth().currentUser?.uid)
       .collection("userGameHistory")
       .get();
     userGameHistoryQuerySnapshot.forEach((doc) => {
@@ -86,7 +87,15 @@ const LanguageDifficulty = (props: Props) => {
 
      
         {isLoading ? (
-          <ActivityIndicator size="large" color="#0000ff" />
+          <FlatList 
+          data={[1,2,3,4,5]}
+          renderItem={({index}) => {
+            return <DifficultiesSkelton key={index} />
+          }}
+          contentContainerStyle={{ gap: Spacing.MEDIUM, flexGrow: 1 ,paddingBottom:100 * Dimensions.RESPONSIVE_HEIGHT }}
+          />
+          
+          
         ) : (
           <View>
             <View className="mb-5">

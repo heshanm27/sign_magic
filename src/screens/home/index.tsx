@@ -19,10 +19,11 @@ import GenImg from "../../assets/social/home.png";
 import { horizontalScale, verticalScale } from "@src/utils/metrics";
 import LinearGradient from "react-native-linear-gradient";
 import Spacing from "@src/theme/Spacing";
-import { useNavigation } from "@react-navigation/native";
+import { DrawerActions, useNavigation } from "@react-navigation/native";
 import { useEffect, useState } from "react";
 import auth from "@react-native-firebase/auth";
 import firestore from "@react-native-firebase/firestore";
+import  Icon  from "react-native-vector-icons/Ionicons";
 type Props = {};
 interface HomeCard {
   title: string;
@@ -93,6 +94,15 @@ const Home = (props: Props) => {
           backgroundColor: "#72B056",
         }}
       >
+        <View style={{
+        
+          justifyContent:"flex-end",
+          alignItems:"flex-end",
+          flexDirection:"row",
+
+        }}>
+            <Icon name="menu" onPress={()=>navigation.dispatch(DrawerActions.openDrawer())}  size={40} color="white" />
+        </View>
         <View
           style={{
             flexDirection: "row",
@@ -124,7 +134,7 @@ const Home = (props: Props) => {
           <View>
             <Text className="text-lg font-semibold text-black text-center">Exp Level</Text>
             <Text className="text-black">
-              {user.level ?? ""}
+              {user?.level ?? ""}
             </Text>
           </View>
         </View>
