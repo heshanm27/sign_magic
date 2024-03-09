@@ -12,7 +12,12 @@
           "package_name": "com.sign_magic"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "782861776804-8e1k0focen5tqkia4qgevop1e0ld662f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDiJeCvJ76TM5ulrxSoDFrNPhaQHev1BK0"
@@ -20,7 +25,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "782861776804-8e1k0focen5tqkia4qgevop1e0ld662f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

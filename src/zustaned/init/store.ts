@@ -1,38 +1,44 @@
-import {persist} from 'zustand/middleware';
-import AsynStorage from '@react-native-async-storage/async-storage';
-import {create} from 'zustand';
-
-export interface Todo {
-  id: string;
-  text: string;
-  completed: boolean;
-  createdAt: string;
-}
+import { createJSONStorage, persist,PersistStorage } from "zustand/middleware";
+import AsynStorage from "@react-native-async-storage/async-storage";
+import { create } from "zustand";
 
 export interface InitState {
   store: {
     firstLoad: boolean;
-
-  
-  }
-
+    onBoarding: boolean;
+  };
+  setFirstLoad: (firstLoad: boolean) => void;
+  setOnBoarding: (onBoarding: boolean) => void;
 }
 
 export const useInitStore = create<InitState>(
   // @ts-ignore
   persist(
-    set => ({
+    (set) => ({
       store: {
-        firstLoad: false,
-        onBoarding: false,
-     }
-    }
-    
-    
-    ),
+        firstLoad: true,
+        onBoarding: true,
+      },
+      setFirstLoad: (firstLoad: boolean) => {
+        set((state) => ({
+          store: {
+            ...state.store,
+            firstLoad: firstLoad,
+          },
+        }));
+      },
+      setOnBoarding: (onBoarding: boolean) => {
+        set((state) => ({
+          store: {
+            ...state.store,
+            onBoarding: onBoarding,
+          },
+        }));
+      },
+    }),
     {
-      name: 'init-storage',
-      getStorage: () => AsynStorage,
-    },
-  ),
+      name: "init-storage",
+      storage: createJSONStorage(() => AsynStorage)
+    }
+  )
 );

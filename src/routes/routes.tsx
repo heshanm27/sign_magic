@@ -9,8 +9,6 @@ import SignUp from "@src/screens/sign-up";
 import LanguageDifficulty from "@src/screens/language/difficulty";
 import LanguageLevel from "@src/screens/language/level";
 import GameScreen from "@src/screens/game";
-
-import { StatusBar } from "react-native";
 import EnvironmentDifficulty from "@src/screens/environment/difficulty";
 import EnvironmentLevel from "@src/screens/environment/level";
 import SocialEduLevel from "@src/screens/socialedu/level";
@@ -21,10 +19,16 @@ import MathGameScreen from "@src/screens/math/game";
 import SocialEduDifficulty from "@src/screens/socialedu/difficulty";
 import SocialEduGameScreen from "@src/screens/socialedu/game";
 import EnvironmentGameScreen from "@src/screens/environment/game";
+import OnboardingScreen from "@src/screens/on-boarding";
+
+import { useInitStore } from "@src/zustaned/init/store";
 type Props = {};
 
 export default function RoutesStack({}: Props) {
   const [initializing, setInitializing] = useState(true);
+  const {
+    store: { firstLoad, onBoarding },
+  } = useInitStore();
   const [user, setUser] = useState();
   // Handle user state changes
   function onAuthStateChanged(user: any) {
@@ -42,8 +46,8 @@ export default function RoutesStack({}: Props) {
   const Stack = createNativeStackNavigator();
 
   return (
-    <Stack.Navigator initialRouteName={true ? "Home" : "SignIn"}>
-      {true ? (
+    <Stack.Navigator initialRouteName={user ? "Home" : "signin"}>
+      {user ? (
         <>
           <Stack.Screen
             name="Home"
@@ -164,21 +168,23 @@ export default function RoutesStack({}: Props) {
         </>
       ) : (
         <>
-          <Stack.Screen
-            options={{
-              headerShown: false,
-            }}
-            name="Sign In"
-            navigationKey="Sign In"
-            component={SignIn}
-          />
-          <Stack.Screen
-            options={{
-              headerShown: false,
-            }}
-            name="Sign Up"
-            component={SignUp}
-          />
+          {onBoarding ? (
+            <Stack.Screen
+              options={{
+                headerShown: false,
+              }}
+              name="onboarding"
+              component={OnboardingScreen}
+            />
+          ) : (
+            <Stack.Screen
+              options={{
+                headerShown: false,
+              }}
+              name="signin"
+              component={SignIn}
+            />
+          )}
         </>
       )}
     </Stack.Navigator>

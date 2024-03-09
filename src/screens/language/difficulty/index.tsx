@@ -94,11 +94,15 @@ const LanguageDifficulty = (props: Props) => {
               renderItem={({ index,item }) => {
                 console.log(item)
                 return <DifficultyLevelCard 
+                key={index}
                 completed={difficulty?.completedQuestions ?? 0}
                 title={item?.id}
                 uri={item?.img}
                 total={item?.size}
                 url="LanguageLevel"
+                isFirst={index === 0}
+                isLast={index === difficulty.length - 1}
+
                 />;
               }}
             />

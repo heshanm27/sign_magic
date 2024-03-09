@@ -7,14 +7,16 @@ interface IPaswordInput {
     label:string,
     onBlur:()=>void,
     onChange:()=>void,
-    placeholder:string
+    placeholder:string,
+    errorMsg:string
 }
 
 export default function PaswordInput({
     label,
     onBlur,
     onChange,
-    placeholder
+    placeholder,
+    errorMsg
 }:IPaswordInput)  {
     const [isVisable,setIsVisable] = useState(false)
 
@@ -27,6 +29,7 @@ export default function PaswordInput({
     onBlur={onBlur}
     onChange={onChange}
     placeholder={placeholder}
+    errorMessage={errorMsg}
     
     />
    

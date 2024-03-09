@@ -22,7 +22,7 @@ const MathDifficulty = (props: Props) => {
   // Function to get the difficulty data
   async function getDifficulty() {
     const languageQuerySnapshot = await firestore()
-      .collection("language")
+      .collection("math")
       .orderBy("order")
       .get();
     // Get the size of each difficulty level and set completed questions to 0

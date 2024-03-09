@@ -10,10 +10,12 @@ type Props = {
   total: number;
   uri: string;
   url:string
+  isFirst?: boolean;
+  isLast?: boolean;
 }
 
 
-export default function DifficultyLevelCard({ title, completed, total, uri,url }: Props) {
+export default function DifficultyLevelCard({ title, completed, total, uri,url ,isFirst,isLast}: Props) {
  const navigate = useNavigation<any>()
  
   return (
@@ -25,7 +27,9 @@ export default function DifficultyLevelCard({ title, completed, total, uri,url }
       display:"flex",
       backgroundColor:"#fff3bf",
       padding:Spacing.EXTRA_SMALL,
-      borderRadius:40
+      borderRadius:40,
+      marginTop:isFirst || isLast ?  Spacing.SMALL: 0,
+      marginBottom:isFirst || isLast ?  Spacing.SMALL: 0,
     }}
     >
     <View style={styles.card}>
