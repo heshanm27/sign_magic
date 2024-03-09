@@ -32,6 +32,7 @@ export default function RoutesStack({}: Props) {
   const [user, setUser] = useState();
   // Handle user state changes
   function onAuthStateChanged(user: any) {
+    console.log("user", user);
     setUser(user);
     if (initializing) setInitializing(false);
   }

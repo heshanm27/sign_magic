@@ -20,7 +20,9 @@ import { horizontalScale, verticalScale } from "@src/utils/metrics";
 import LinearGradient from "react-native-linear-gradient";
 import Spacing from "@src/theme/Spacing";
 import { useNavigation } from "@react-navigation/native";
-
+import { useEffect, useState } from "react";
+import auth from "@react-native-firebase/auth";
+import firestore from "@react-native-firebase/firestore";
 type Props = {};
 interface HomeCard {
   title: string;
@@ -32,8 +34,18 @@ interface HomeCard {
 const Home = (props: Props) => {
   const navigation = useNavigation<any>();
   const { t } = useTranslation();
+  const [user, setUser] = useState<any>(null);
 
-  console.log;
+  useEffect(() => {
+    async function getUser()  {
+     const firestoreUser =  await firestore().collection("user").doc(auth().currentUser?.uid).get();
+      console.log("firestoreUser",firestoreUser);
+      setUser(firestoreUser.data());
+    }
+    getUser();
+    console.log("user",user);
+  }, []);
+
   const HomeCards: HomeCard[] = [
     {
       description:
@@ -81,36 +93,41 @@ const Home = (props: Props) => {
           backgroundColor: "#72B056",
         }}
       >
-        {/* <View style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              padding: 16,
-              margin: 8,
-              borderRadius: 36,
-              shadowColor: "#000",
-              shadowOffset: {
-                width: 1,
-                height: 1,
-              },
-              shadowOpacity: 1,
-              shadowRadius: 8,
-              elevation: 15, // For Android devices
-              backgroundColor: '#fff',
-
-            }}
-            >
-              <Avatar
-                size={'medium'}
-                rounded
-                icon={{ name: 'pencil', type: 'font-awesome' }}
-                containerStyle={{ backgroundColor: '#6733b9' }}
-              />
-              <View>
-                <Text className='text-lg font-semibold '>Exp Level</Text>
-                <Text className=''>Beginner</Text>
-              </View>
-            </View> */}
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+            padding: 16,
+            margin: 8,
+            borderRadius: Spacing.LARGE,
+            shadowColor: "#000",
+            shadowOffset: {
+              width: 1,
+              height: 1,
+            },
+            shadowOpacity: 1,
+            shadowRadius: 8,
+            elevation: 15, // For Android devices
+            backgroundColor: "#fff",
+          }}
+        >
+          <Avatar
+            size={"medium"}
+            rounded
+            source={{uri:auth()?.currentUser?.photoURL ??""}}
+            containerStyle={{ backgroundColor: "#6733b9" }}
+          />
+          <Text
+          className="text-black text-lg font-semibold text-center"
+          >{auth()?.currentUser?.displayName ?? ""}</Text>
+          <View>
+            <Text className="text-lg font-semibold text-black text-center">Exp Level</Text>
+            <Text className="text-black">
+              {user.level ?? ""}
+            </Text>
+          </View>
+        </View>
         <View>
           <Text className="text-4xl font-bold font mt-2 p-1 text-white">
             {t("lets-play")}

@@ -1,9 +1,4 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-} from "react-native";
+import { View, Text, StyleSheet, ScrollView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Dimensions from "@src/theme/Dimensions";
 import Shadow from "@src/theme/Shadow";
@@ -15,11 +10,10 @@ import {
   GoogleSignin,
   statusCodes,
 } from "@react-native-google-signin/google-signin";
-import auth from "@react-native-firebase/auth"
+import auth from "@react-native-firebase/auth";
 import LottieView from "lottie-react-native";
 import LinearGradient from "react-native-linear-gradient";
-
-
+import firestore from "@react-native-firebase/firestore";
 
 const SignIn = () => {
   const navigation = useNavigation<any>();
@@ -28,6 +22,25 @@ const SignIn = () => {
     webClientId:
       "782861776804-8e1k0focen5tqkia4qgevop1e0ld662f.apps.googleusercontent.com", // client ID of type WEB for your server. Required to get the `idToken` on the user object, and for offline access.
   });
+  const registerUserInFirestore = async (userInfo: any) => {
+    try {
+      const userDoc = await firestore()
+        .collection("user")
+        .doc(userInfo.user.uid)
+        .get();
+
+      if (!userDoc.exists) {
+        await firestore().collection("user").doc(userInfo.user.uid).set({
+          email: userInfo.user.email,
+          name: userInfo.user.displayName,
+          photo: userInfo.user.photoURL,
+          level: "beginner",
+        });
+      }
+    } catch (e) {
+      console.log("error", e);
+    }
+  };
 
   const signIn = async () => {
     try {
@@ -35,24 +48,26 @@ const SignIn = () => {
       await GoogleSignin.hasPlayServices({
         showPlayServicesUpdateDialog: true,
       });
-      
-      const {idToken} = await GoogleSignin.signIn();
+
+      const { idToken } = await GoogleSignin.signIn();
       const googleCredential = auth.GoogleAuthProvider.credential(idToken);
       const result = await auth().signInWithCredential(googleCredential);
-console.log("result",result)
+
+      await registerUserInFirestore(result);
+
       // setState({ userInfo });
     } catch (error: any) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-        console.log("error",error)
+        console.log("error", error);
         // user cancelled the login flow
       } else if (error.code === statusCodes.IN_PROGRESS) {
-        console.log("error",error)
+        console.log("error", error);
         // operation (e.g. sign in) is in progress already
       } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
         // play services not available or outdated
-        console.log("error",error)
+        console.log("error", error);
       } else {
-        console.log("error",error)
+        console.log("error", error);
         // some other error happened
       }
     }
@@ -85,7 +100,7 @@ console.log("result",result)
               style={{
                 fontWeight: "bold",
                 fontSize: normalize(45),
-                color:"#ffc400"
+                color: "#ffc400",
               }}
             >
               Login
@@ -94,7 +109,7 @@ console.log("result",result)
               style={{
                 fontWeight: "400",
                 fontSize: normalize(24),
-                color:"#ffc400"
+                color: "#ffc400",
               }}
             >
               Please sign in to continue
@@ -119,7 +134,6 @@ console.log("result",result)
                   signIn();
                 }}
                 title="Sign in with Google"
-                
                 startIcon={
                   <GoogleSvg
                     height={36 * Dimensions.RESPONSIVE_WIDTH}
