@@ -48,21 +48,21 @@ export default function RoutesStack({}: Props) {
 
   return (
     <Stack.Navigator
-    screenOptions={{
-      headerShown: false,
-    
-    }}
-    initialRouteName={user ? "Home" : "signin"}>
-      <Stack.Screen name="drawermenu" component={MyDrawer} />
+      screenOptions={{
+        headerShown: false,
+      }}
+      initialRouteName={user ? "Root" : "signin"}
+    >
       {user ? (
         <>
           <Stack.Screen
-            name="Home"
-            component={Home}
+            name="Root"
+            component={MyDrawer}
             options={{
               headerShown: false,
             }}
           />
+
           <Stack.Screen name="Notification" component={Notification} />
           <Stack.Screen name="Profile" component={Profile} />
 

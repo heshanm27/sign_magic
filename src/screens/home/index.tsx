@@ -24,6 +24,7 @@ import { useEffect, useState } from "react";
 import auth from "@react-native-firebase/auth";
 import firestore from "@react-native-firebase/firestore";
 import  Icon  from "react-native-vector-icons/Ionicons";
+import MyDrawer from "@src/routes/drawer";
 type Props = {};
 interface HomeCard {
   title: string;
@@ -209,6 +210,7 @@ const Home = (props: Props) => {
           />
         </View>
       </View>
+    
     </SafeAreaView>
   );
 };
