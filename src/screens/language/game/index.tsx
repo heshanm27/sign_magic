@@ -9,8 +9,10 @@ import {
 } from "react-native";
 import {
   Camera,
+  Frame,
   useCameraDevice,
   useCameraPermission,
+  useFrameProcessor,
 } from "react-native-vision-camera";
 import { useRef, useEffect, useState } from "react";
 import Dimensions from "@src/theme/Dimensions";
@@ -156,9 +158,18 @@ const LanuageGameScreen = (props: Props) => {
     //     handleVideoStream();
     //   }
     // }, [camera, socket]);
+    const framerProcessor = useFrameProcessor(async (frame:Frame) => {
+      'worklet'
+    
+      if (frame.pixelFormat === 'rgb') {
+        const buffer = frame.toArrayBuffer()
+        const data = new Uint8Array(buffer)
+        console.log(`Pixel at 0,0: RGB(${data[0]}, ${data[1]}, ${data[2]})`)
+      }
+    },[]);
 
     useEffect(()=>{
-      getRealTimeFeed()
+     
 
 
       setTimeout(() => {
@@ -189,6 +200,11 @@ const LanuageGameScreen = (props: Props) => {
             device={device}
             isActive={true}
             video={true}
+            frameProcessor={framerProcessor}
+            onInitialized={()=>{
+              // getRealTimeFeed()
+            }}
+           
           />
         </View>
         {/* <View style={{ position: 'absolute', top: 10, alignSelf: 'center' }}>
