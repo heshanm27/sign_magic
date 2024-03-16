@@ -7,6 +7,8 @@ import { ThemeProvider, createTheme } from '@rneui/themed';
 import { SafeAreaView,StatusBar } from 'react-native'
 import { useEffect } from 'react';
 import { useCameraPermission } from 'react-native-vision-camera';
+import BootSplash from "react-native-bootsplash";
+
 import "./i18n/i8n";
 const theme = createTheme({
   lightColors: {
@@ -37,7 +39,12 @@ const App = () => {
     <SafeAreaProvider>
     <StatusBar hidden={true}/>
     <ThemeProvider theme={theme}>
-    <NavigationContainer>
+    <NavigationContainer
+    onReady={() => {
+      BootSplash.hide({ fade: true });
+    
+    }}
+    >
       <RoutesStack />
     </NavigationContainer>
     </ThemeProvider>
