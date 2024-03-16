@@ -6,41 +6,70 @@ import {
   SafeAreaView,
   Image,
   Button,
+  Modal,
 } from "react-native";
 import {
   Camera,
-  Frame,
   useCameraDevice,
+  useCameraFormat,
   useCameraPermission,
-  useFrameProcessor,
 } from "react-native-vision-camera";
 import { useRef, useEffect, useState } from "react";
 import Dimensions from "@src/theme/Dimensions";
 import LinearGradient from "react-native-linear-gradient";
 import Spacing from "@src/theme/Spacing";
-type Props = {};
+import CustomModal from "@src/components/modals/SuccessModal";
+import storage from "@react-native-firebase/storage";
+import SucessModal from "@src/components/modals/SuccessModal";
+import ErrorModal from "@src/components/modals/ErrorModal";
+import SuccessImage from "../../../assets/lang/emotion/happy.png";
+import ErrorImage from "../../../assets/lang/emotion/sad.png";
+import { useNavigation } from "@react-navigation/native";
+import Icon from "react-native-vector-icons/Ionicons";
+import { LevelData } from "@src/components/card/level";
 
-const LanuageGameScreen = (props: Props) => {
+const LanuageGameScreen = ({ route, navigation }: any) => {
+  const levelData: LevelData = route.params.levelData;
+
   const camera = useRef<Camera>(null);
   const device = useCameraDevice("front");
+  const [isRecording, setIsRecording] = useState(false);
+  const [isSucessShowPopup, setisSuceessShowPopup] = useState(false);
+  const [isErrorPopUp, setIsErrorPopUp] = useState(false);
   const { hasPermission, requestPermission } = useCameraPermission();
-
-  const getRealTimeFeed = async () => {
-
-    try{
-    if (camera.current) {
-      console.log('startRecording')
-      camera.current.startRecording({
-        onRecordingFinished: (video) => console.log(video),
-        onRecordingError: (error) => console.error(error)
-      })
-    } 
-
-  }catch(e){
-    console.log(e)
-  }
+  const format = useCameraFormat(device,[
+    {
+      videoResolution:{
+        width: 1920,
+        height: 1080
+      },
+      fps: 30
+    },
+  ]);
+  const [isTimeOut, setIsTimeOut] = useState(false);
   
-  }
+  const [timer, setTimer] = useState(30);
+  const [showPopup, setShowPopup] = useState(false);
+
+  const uploadVVideo = async (file:any) => {
+    const parts = file.path.split("/");
+    const name = parts[parts.length - 1];
+    const reference = storage().ref(`detection/${name}`);
+    const uploadTask = reference.putFile(file.path);
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        snapshot.ref.getDownloadURL().then((downloadURL) => {
+          console.log("File available at", downloadURL);
+        });
+        console.log(snapshot);
+      },
+      (error) => {
+        console.log(error);
+      },
+      () => {}
+    );
+  };
 
   useEffect(() => {
     if (!hasPermission) {
@@ -63,135 +92,112 @@ const LanuageGameScreen = (props: Props) => {
       </View>
     );
 
-    // const [timer, setTimer] = useState(30);
-    // const [showPopup, setShowPopup] = useState(false);
+  useEffect(() => {
+    if (camera.current && !isRecording) {
+      setIsRecording(true);
+      console.log("startRecording");
+      camera.current.startRecording({
+        videoBitRate: "low",
+        videoCodec: "h264",
+        fileType: "mp4",
 
-    // useEffect(() => {
-    //   let interval: NodeJS.Timeout;
-    //   if (timer > 0) {
-    //     interval = setInterval(() => {
-    //       setTimer(timer - 1);
-    //     }, 1000);
-    //   } else {
-    //     setShowPopup(true);
-    //   }
-    //   return () => {
-    //     if (interval) {
-    //       clearInterval(interval);
-    //     }
-    //   };
-    // }, [timer]);
+        
+        onRecordingFinished: (video) => {
+          uploadVVideo(video);
+        },
+        onRecordingError: (error) => console.error(error),
+      });
+    }
 
-    // const retry = () => {
-    //   setTimer(30);
-    //   setShowPopup(false);
-    // };
-
-    // if (showPopup) {
-    //   return (
-    //     <View>
-    //       <Text>Time is up, retry again?</Text>
-    //       <Button title="Retry" onPress={retry} />
-    //     </View>
-    //   );
-    // }
-    
-    // const [answer, setAnswer] = useState<string | null>(null);
-    // const [isWinning, setIsWinning] = useState(false);
-
-    // useEffect(() => {
-    //   if (socket) {
-    //     socket.onmessage = (event) => {
-    //       const data = JSON.parse(event.data);
-    //       if (data.answer === answer) {
-    //         setIsWinning(true);
-    //       }
-    //     };
-    //   }
-    // }, [socket, answer]);
-
-    // useEffect(() => {
-    //   if (camera.current && socket && socket.readyState === WebSocket.OPEN) {
-    //     const handleVideoStream = async () => {
-    //       const stream = await device..getStream();
-    //       socket.send(JSON.stringify({ stream, answer }));
-    //     };
-    //     handleVideoStream();
-    //   }
-    // }, [camera, socket, answer]);
-
-    // if (isWinning) {
-    //   return (
-    //     <View>
-    //       <Text>You won!</Text>
-    //       <Button title="Play again" onPress={retry} />
-    //     </View>
-    //   );
-    // }
-    // const [socket, setSocket] = useState<WebSocket | null>(null);
-
-    // useEffect(() => {
-    //   const ws = new WebSocket('ws://your-websocket-url');
-    //   ws.onopen = () => {
-    //     console.log('connected to websocket');
-    //   };
-    //   ws.onerror = (error) => {
-    //     console.log('websocket error', error);
-    //   };
-    //   ws.onclose = (event) => {
-    //     console.log('websocket connection closed', event.code);
-    //   };
-    //   setSocket(ws);
-    //   return () => {
-    //     ws.close();
-    //   };
-    // }, []);
-
-    // useEffect(() => {
-    //   if (camera.current) {
-    //     const handleVideoStream = async () => {
-    //       const stream = await camera.current.getStream();
-    //       if (socket && socket.readyState === WebSocket.OPEN) {
-    //         socket.send(stream);
-    //       }
-    //     };
-    //     handleVideoStream();
-    //   }
-    // }, [camera, socket]);
-    const framerProcessor = useFrameProcessor(async (frame:Frame) => {
-      'worklet'
-    
-      if (frame.pixelFormat === 'rgb') {
-        const buffer = frame.toArrayBuffer()
-        const data = new Uint8Array(buffer)
-        console.log(`Pixel at 0,0: RGB(${data[0]}, ${data[1]}, ${data[2]})`)
+    if (timer === 20) {
+      if (camera.current && isRecording) {
+        camera.current.stopRecording();
       }
-    },[]);
+    }
 
-    useEffect(()=>{
-     
+    let interval: NodeJS.Timeout;
+    if (timer > 0) {
+      interval = setInterval(() => {
+        setTimer(timer - 1);
+        setIsTimeOut(true);
+      }, 1000);
+    }
 
+    if (timer === 1) {
+      setIsErrorPopUp(true);
+    }
+    return () => {
+      if (interval) {
+        clearInterval(interval);
+      }
+    };
+  }, [timer]);
 
-      setTimeout(() => {
-        if (camera.current) {
-          console.log('stopRecording')
-          camera.current.stopRecording()
-        }
-      }, 5000);
-    },[])
+  // const retry = () => {
+  //   setTimer(30);
+  //   setShowPopup(false);
+  // };
+
+  // if (showPopup) {
+  //   return (
+  //     <View>
+  //       <Text>Time is up, retry again?</Text>
+  //       <Button title="Retry" onPress={retry} />
+  //     </View>
+  //   );
+  // }
+
+  const connectWebSocket = async () => {
+    const ws = new WebSocket(
+      "wss://demo.piesocket.com/v3/channel_123?api_key=VCXCEuvhGcBDP7XhiJJUDvR1e1D3eiVjgZ9VRiaV&notify_self"
+    );
+    ws.onopen = () => {
+      console.log("connected to websocket");
+    };
+    ws.onerror = (error) => {
+      console.log("websocket error", error);
+    };
+    ws.onclose = (event) => {
+      console.log("websocket connection closed", event.code);
+    };
+  };
+
+  function base64ToArrayBuffer(base64: string) {
+    console.log("sdsd", base64);
+  }
+
+  useEffect(() => {
+    if (camera.current && isTimeOut) {
+      setIsErrorPopUp(true);
+    }
+  }, [isTimeOut]);
 
   return (
     <SafeAreaView className="flex flex-1">
-        <LinearGradient style={{
-        flex:1,
-        padding:Spacing.MEDIUM
-      }}
-      colors={["#ffc400","#f3df84"]}
+      <LinearGradient
+        style={{
+          flex: 1,
+          padding: Spacing.MEDIUM,
+        }}
+        colors={["#ffc400", "#f3df84"]}
       >
-
-
-        <View style={{ position: 'absolute', left: 10, top: 10 }}>
-          <Button title="Back" onPress={() => {}} />
+        <View
+          style={{
+            position: "absolute",
+            left: 10,
+            top: 10,
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Icon
+            name="arrow-back"
+            size={40}
+            color="white"
+            onPress={() => navigation.goBack()}
+          />
         </View>
         <View style={styles.container}>
           <Camera
@@ -200,17 +206,12 @@ const LanuageGameScreen = (props: Props) => {
             device={device}
             isActive={true}
             video={true}
-            frameProcessor={framerProcessor}
-            onInitialized={()=>{
-              // getRealTimeFeed()
-            }}
-           
+            format={format}
           />
         </View>
-        {/* <View style={{ position: 'absolute', top: 10, alignSelf: 'center' }}>
-          <Text style={{ fontSize: 20, fontWeight: 'bold' }}>{timer}</Text>
-        </View> */}
-
+        <View style={{ position: "absolute", top: 10, alignSelf: "center" }}>
+          <Text style={{ fontSize: 40, fontWeight: "bold" }}>{timer}</Text>
+        </View>
 
         <View
           style={{
@@ -222,38 +223,57 @@ const LanuageGameScreen = (props: Props) => {
         >
           <Image
             source={{
-              uri: "https://firebasestorage.googleapis.com/v0/b/sign-magic-3b3bf.appspot.com/o/language%2Fdifficulty%2Fadvanced.png?alt=media&token=bbf999f4-fcb8-44ec-931e-6e8c192b1a2e",
+              uri: levelData?.image ?? "",
             }}
             style={styles.centerImage}
           />
-          <Text
-            style={styles.centerText}
-          >
-            මේ අකුර කුමක්ද?
-          </Text>
+          <Text style={styles.centerText}>{levelData?.question ?? ""}</Text>
         </View>
-     
       </LinearGradient>
+
+      <SucessModal
+        image={SuccessImage}
+        color={["#ffc400", "#f3df84"]}
+        onRetry={() => {
+          setisSuceessShowPopup(false);
+          console.log("retry");
+        }}
+        onSucess={() => {
+          setisSuceessShowPopup(false);
+        }}
+        isOpen={false}
+      />
+      <ErrorModal
+        color={["#ffc400", "#f3df84"]}
+        image={ErrorImage}
+        onRetry={() => {
+          setIsErrorPopUp(false);
+        }}
+        onSucess={() => {
+          setIsErrorPopUp(false);
+        }}
+        isOpen={false}
+      />
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    position: 'absolute',
+    position: "absolute",
     right: 10,
     top: 10,
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start',
-    backgroundColor: 'white',
-    borderColor: 'white',
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
+    backgroundColor: "white",
+    borderColor: "white",
     borderRadius: 8,
-    width: 150*Dimensions.RESPONSIVE_WIDTH,
-    height: 250*Dimensions.RESPONSIVE_HEIGHT,
+    width: 150 * Dimensions.RESPONSIVE_WIDTH,
+    height: 250 * Dimensions.RESPONSIVE_HEIGHT,
   },
   camera: {
-    width: '100%',
-    height: '100%',
+    width: "100%",
+    height: "100%",
   },
   centerImage: {
     width: 200,
@@ -263,7 +283,8 @@ const styles = StyleSheet.create({
   centerText: {
     fontSize: 20,
     color: "black",
-    fontWeight:'bold'
+    fontWeight: "bold",
+    textAlign: "center",
   },
 });
 

@@ -1,22 +1,26 @@
 import { View, Text, ModalProps, Image, Pressable } from "react-native";
 import { Modal } from "react-native";
+import LangImg from "../../assets/lang/home.png";
 import LinearGradient from "react-native-linear-gradient";
-
+import Spacing from "@src/theme/Spacing";
 
 type Props = ModalProps & {
   isOpen: boolean;
-  image:any;
-  onSucess:()=>void;
-  onRetry:()=>void;
-  color:string[];
+  color: string[];
+  image: any;
+  onSucess: () => void;
+  onRetry: () => void;
 };
 
-export default function SucessModal({ isOpen, children,
-    image,
-    onRetry,
-    onSucess,
-    color,
-    ...rest }: Props) {
+export default function ErrorModal({
+  isOpen,
+  image,
+  onRetry,
+  onSucess,
+  children,
+  color,
+  ...rest
+}: Props) {
   return (
     <Modal visible={isOpen} transparent={true}>
       <View
@@ -46,7 +50,7 @@ export default function SucessModal({ isOpen, children,
               padding: 10,
             }}
           >
-            Hurrey! You won the level
+            Time is up, retry again?
           </Text>
           <Image
             source={image}
@@ -67,7 +71,7 @@ export default function SucessModal({ isOpen, children,
             }}
           >
             <Pressable
-            onPress={()=>onRetry()}
+              onPress={()=>onRetry()}
               style={{
                 borderWidth: 2,
                 borderColor: "white",
@@ -91,7 +95,7 @@ export default function SucessModal({ isOpen, children,
             </Pressable>
 
             <Pressable
-            onPress={()=>onSucess()}
+              onPress={()=>onSucess()}
               style={{
                 backgroundColor: "white",
                 borderRadius: 10,

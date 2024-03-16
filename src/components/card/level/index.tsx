@@ -3,6 +3,18 @@ import Spacing from "@src/theme/Spacing";
 import { useNavigation } from "@react-navigation/native";
 import { normalize } from "@src/theme/Typography";
 
+
+export interface LevelData {
+  answer:     string;
+  completed?: boolean;
+  id:         string;
+  image:      string;
+  qNo:        number;
+  question:   string;
+  score?:     number;
+}
+
+
 type Props = {
   title: string;
   url: string;
@@ -10,6 +22,7 @@ type Props = {
   borderColor?: string;
   isFirst?: boolean;
   isLast?: boolean;
+  levelData:LevelData
 };
 
 export default function LevelCard({
@@ -19,11 +32,14 @@ export default function LevelCard({
   borderColor = "#ffa431",
   isFirst = false,
   isLast = false,
+  levelData
 }: Props) {
   const navigate = useNavigation<any>();
 
   return (
-    <Pressable onPress={() => navigate.navigate(url)}>
+    <Pressable onPress={() => navigate.navigate(url,{
+      levelData
+    })}>
       <View
         style={{
           display: "flex",

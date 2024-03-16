@@ -88,12 +88,12 @@ const LanguageLevel = (props: Props) => {
                console.log(item)
                return <LevelCard 
               title={item?.qNo}
+              levelData={item}
               url='LanguageGame'
               isFirst={index === 0}
               isLast={index === questions.length - 1}
               backgroundColor="#f3df84"
-                borderColor="#ffc400"
-               
+              borderColor="#ffc400"
                />;
              }}
            />
