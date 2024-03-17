@@ -17,10 +17,7 @@ class MainActivity : ReactActivity() {
    */
   override fun getMainComponentName(): String = "sign_magic"
 
-  override fun onCreate(savedInstanceState: Bundle?) {
-    RNBootSplash.init(this, R.style.BootTheme) // ⬅️ initialize the splash screen
-    super.onCreate(null) // or super.onCreate(null) with react-native-screens
-  }
+  
 
   /**
    * Returns the instance of the [ReactActivityDelegate]. We use [DefaultReactActivityDelegate]

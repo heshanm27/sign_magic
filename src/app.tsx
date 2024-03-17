@@ -35,6 +35,14 @@ const App = () => {
     }
 
   }, [hasPermission]);
+
+
+  useEffect(() => {
+    setInterval(() => {
+      BootSplash.hide({ fade: true });
+    }, 1000)
+  },[])
+  BootSplash.hide({ fade: true });
   return (
     <SafeAreaProvider>
     <StatusBar hidden={true}/>

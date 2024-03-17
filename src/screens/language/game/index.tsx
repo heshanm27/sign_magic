@@ -27,7 +27,9 @@ import ErrorImage from "../../../assets/lang/emotion/sad.png";
 import { useNavigation } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { LevelData } from "@src/components/card/level";
-
+import LoadingModal from "@src/components/modals/LoadingModal";
+import firestore from "@react-native-firebase/firestore";
+import auth from "@react-native-firebase/auth";
 const LanuageGameScreen = ({ route, navigation }: any) => {
   const levelData: LevelData = route.params.levelData;
 
@@ -37,21 +39,23 @@ const LanuageGameScreen = ({ route, navigation }: any) => {
   const [isSucessShowPopup, setisSuceessShowPopup] = useState(false);
   const [isErrorPopUp, setIsErrorPopUp] = useState(false);
   const { hasPermission, requestPermission } = useCameraPermission();
-  const format = useCameraFormat(device,[
+  const format = useCameraFormat(device, [
     {
-      videoResolution:{
+      videoResolution: {
         width: 1920,
-        height: 1080
+        height: 1080,
       },
-      fps: 30
+      fps: 30,
     },
   ]);
-  const [isTimeOut, setIsTimeOut] = useState(false);
-  
+  console.log("Fetching user game history", levelData.difficulty)
   const [timer, setTimer] = useState(30);
-  const [showPopup, setShowPopup] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isResultPending, setIsResultPending] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("Time is up, retry again?");
 
-  const uploadVVideo = async (file:any) => {
+  const uploadVVideo = async (file: any) => {
+    setIsResultPending(true);
     const parts = file.path.split("/");
     const name = parts[parts.length - 1];
     const reference = storage().ref(`detection/${name}`);
@@ -61,15 +65,75 @@ const LanuageGameScreen = ({ route, navigation }: any) => {
       (snapshot) => {
         snapshot.ref.getDownloadURL().then((downloadURL) => {
           console.log("File available at", downloadURL);
+
+          fetch("https://obliging-skink-perfect.ngrok-free.app/amd/detection", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              image_url: downloadURL,
+              answer:levelData.answer,
+            }),
+          })
+            .then((res) => {
+
+              return res.json();
+            })
+            .then((data) => {
+              console.log(data);
+              if (data.result) {
+                
+                setisSuceessShowPopup(true);
+                setIsResultPending(false);
+              } else {
+                setErrorMsg("Try again, you can do it!");
+                setIsResultPending(false);
+                setIsErrorPopUp(true);
+              }
+            })
+            .catch((err) => {
+              setIsResultPending(false);
+              console.log(err);
+            }).finally(()=>{
+              setIsLoading(false);
+            });
         });
         console.log(snapshot);
       },
       (error) => {
         console.log(error);
+        setIsResultPending(false);
       },
       () => {}
     );
   };
+
+  const updateUserGameHistoryOfQuestion = async () => {
+    try {
+     
+      const userGameHistoryQuerySnapshot = await firestore()
+        .collection("userGameHistory")
+        .doc(auth().currentUser?.uid)
+        .collection("userGameHistory")
+        .get();
+
+     
+          console.log("User game history is empty")
+          await firestore().collection("userGameHistory").doc(auth().currentUser?.uid).collection("userGameHistory").doc(levelData.id).set({
+            score: 0,
+            completed: false,
+            difficultyLevel: levelData.difficulty ? levelData.difficulty : "beginner",
+          })
+
+      
+      
+
+      
+    } catch (error) {
+      console.error("Error fetching user game history:", error);
+    }
+  }
 
   useEffect(() => {
     if (!hasPermission) {
@@ -95,13 +159,12 @@ const LanuageGameScreen = ({ route, navigation }: any) => {
   useEffect(() => {
     if (camera.current && !isRecording) {
       setIsRecording(true);
-      console.log("startRecording");
+
       camera.current.startRecording({
         videoBitRate: "low",
         videoCodec: "h264",
         fileType: "mp4",
 
-        
         onRecordingFinished: (video) => {
           uploadVVideo(video);
         },
@@ -119,12 +182,11 @@ const LanuageGameScreen = ({ route, navigation }: any) => {
     if (timer > 0) {
       interval = setInterval(() => {
         setTimer(timer - 1);
-        setIsTimeOut(true);
       }, 1000);
     }
 
-    if (timer === 1) {
-      setIsErrorPopUp(true);
+    if(timer === 1 && isResultPending ){
+      setIsLoading(true);
     }
     return () => {
       if (interval) {
@@ -133,44 +195,6 @@ const LanuageGameScreen = ({ route, navigation }: any) => {
     };
   }, [timer]);
 
-  // const retry = () => {
-  //   setTimer(30);
-  //   setShowPopup(false);
-  // };
-
-  // if (showPopup) {
-  //   return (
-  //     <View>
-  //       <Text>Time is up, retry again?</Text>
-  //       <Button title="Retry" onPress={retry} />
-  //     </View>
-  //   );
-  // }
-
-  const connectWebSocket = async () => {
-    const ws = new WebSocket(
-      "wss://demo.piesocket.com/v3/channel_123?api_key=VCXCEuvhGcBDP7XhiJJUDvR1e1D3eiVjgZ9VRiaV&notify_self"
-    );
-    ws.onopen = () => {
-      console.log("connected to websocket");
-    };
-    ws.onerror = (error) => {
-      console.log("websocket error", error);
-    };
-    ws.onclose = (event) => {
-      console.log("websocket connection closed", event.code);
-    };
-  };
-
-  function base64ToArrayBuffer(base64: string) {
-    console.log("sdsd", base64);
-  }
-
-  useEffect(() => {
-    if (camera.current && isTimeOut) {
-      setIsErrorPopUp(true);
-    }
-  }, [isTimeOut]);
 
   return (
     <SafeAreaView className="flex flex-1">
@@ -236,23 +260,37 @@ const LanuageGameScreen = ({ route, navigation }: any) => {
         color={["#ffc400", "#f3df84"]}
         onRetry={() => {
           setisSuceessShowPopup(false);
-          console.log("retry");
+          setIsRecording(false);
+          setTimer(30);
         }}
         onSucess={() => {
           setisSuceessShowPopup(false);
+          updateUserGameHistoryOfQuestion();
+
+          navigation.goBack();
         }}
-        isOpen={false}
+        isOpen={isSucessShowPopup}
       />
       <ErrorModal
         color={["#ffc400", "#f3df84"]}
+        msg={errorMsg}
         image={ErrorImage}
         onRetry={() => {
           setIsErrorPopUp(false);
+          setIsRecording(false);
+          setTimer(30);
         }}
         onSucess={() => {
           setIsErrorPopUp(false);
+          updateUserGameHistoryOfQuestion();
+          navigation.goBack();
         }}
-        isOpen={false}
+        isOpen={isErrorPopUp}
+      />
+      <LoadingModal
+        color={["#ffc400", "#f3df84"]}
+        image={ErrorImage}
+        isOpen={isLoading}
       />
     </SafeAreaView>
   );

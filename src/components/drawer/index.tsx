@@ -7,13 +7,14 @@ import { useNavigation } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import auth from "@react-native-firebase/auth";
 import LinearGradient from "react-native-linear-gradient";
-
+import { useTranslation } from "react-i18next";
 const DrawerList = [
   { icon: "home-outline", label: "Home", navigateTo: "Home" },
   { icon: "account-multiple", label: "Profile", navigateTo: "Profile" },
 ];
 const DrawerLayout = ({ icon, label, navigateTo,isFocused }: any) => {
   const navigation = useNavigation<any>();
+
   // console.log(userData);
   return (
     <DrawerItem
@@ -48,6 +49,8 @@ const DrawerItems = ({focused}:DrawerItemsProps) => {
 function DrawerContent(props: DrawerContentComponentProps) {
   const {routeNames,index} = props.state;
   const focused = routeNames[index];
+  const {i18n}= useTranslation();
+  
   console.log(focused);
   return (
     // <LinearGradient
@@ -84,7 +87,23 @@ function DrawerContent(props: DrawerContentComponentProps) {
           </View>
         </View>
       </DrawerContentScrollView>
+   
       <View style={styles.bottomDrawerSection}>
+        <DrawerItem
+          icon={({ color, size }) => (
+            <Icon name="web" color={color} size={size} />
+          )}
+          onPress={() => {
+            if(i18n.language === "en"){
+              i18n.changeLanguage( "si");
+              return;
+            }else{
+              i18n.changeLanguage( "en");
+            }
+          }}
+          label={i18n.language === "en" ? "English" : "Sinhala" }
+        
+        />
         <DrawerItem
           icon={({ color, size }) => (
             <Icon name="exit-to-app" color={color} size={size} />

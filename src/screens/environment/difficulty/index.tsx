@@ -46,6 +46,7 @@ const EnvironmentDifficulty = (props: Props) => {
   }
 
   async function getUserGameHistory(difficultyData: any) {
+    console.log("getUserGameHistory", difficultyData)
     const userGameHistoryQuerySnapshot = await firestore()
       .collection("userGameHistory")
       .doc(auth().currentUser?.uid)
@@ -53,16 +54,20 @@ const EnvironmentDifficulty = (props: Props) => {
       .get();
     userGameHistoryQuerySnapshot.forEach((doc) => {
       const data = doc.data();
-      const difficultyLvl = data.difficultyLvl;
+      const difficultyLvl = data.difficultyLevel;
       // Update completed questions in difficultyData if the difficulty level exists
       const difficultyIndex = difficultyData.findIndex(
-        (difficulty: any) => difficulty.id === difficultyLvl
+        (difficulty: any) => {
+          return difficulty.id === difficultyLvl
+        }
       );
+      console.log("index level" , difficultyData)
       if (difficultyIndex !== -1) {
         difficultyData[difficultyIndex].completedQuestions =
           (difficultyData[difficultyIndex].completedQuestions || 0) + 1;
       }
     });
+    console.log("difficultyData", difficultyData)
     return difficultyData;
   }
 
@@ -110,7 +115,7 @@ const EnvironmentDifficulty = (props: Props) => {
               renderItem={({ index,item }) => {
                 console.log(item)
                 return <DifficultyLevelCard 
-                completed={difficulty?.completedQuestions ?? 0}
+                completed={item?.completedQuestions ?? 0}
                 title={item?.id}
                 uri={item?.img}
                 total={item?.size}
@@ -118,7 +123,7 @@ const EnvironmentDifficulty = (props: Props) => {
                 backgroundColor="#35b007"
                 borderColor="#9bf384"
                 isFirst={index === 0}
-                isLast={index === difficulty.length - 1}
+                isLast={index === item.length - 1}
                 />;
               }}
             />

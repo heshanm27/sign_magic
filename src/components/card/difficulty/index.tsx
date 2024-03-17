@@ -19,7 +19,7 @@ type Props = {
 
 export default function DifficultyLevelCard({ backgroundColor,borderColor,title, completed, total, uri,url ,isFirst,isLast}: Props) {
  const navigate = useNavigation<any>()
- 
+  console.log("title",title,"completed",completed)
   return (
     <Pressable onPress={()=>navigate.navigate(url,{
         id:title

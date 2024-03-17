@@ -12,6 +12,7 @@ export interface LevelData {
   qNo:        number;
   question:   string;
   score?:     number;
+  difficulty: string;
 }
 
 

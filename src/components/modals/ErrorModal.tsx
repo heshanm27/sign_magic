@@ -10,6 +10,7 @@ type Props = ModalProps & {
   image: any;
   onSucess: () => void;
   onRetry: () => void;
+  msg?: string;
 };
 
 export default function ErrorModal({
@@ -19,6 +20,7 @@ export default function ErrorModal({
   onSucess,
   children,
   color,
+  msg="Time is up, retry again?",
   ...rest
 }: Props) {
   return (
@@ -50,7 +52,7 @@ export default function ErrorModal({
               padding: 10,
             }}
           >
-            Time is up, retry again?
+      {msg}
           </Text>
           <Image
             source={image}

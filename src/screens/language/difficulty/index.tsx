@@ -45,6 +45,7 @@ const LanguageDifficulty = (props: Props) => {
   }
 
   async function getUserGameHistory(difficultyData: any) {
+    console.log("getUserGameHistory", difficultyData)
     const userGameHistoryQuerySnapshot = await firestore()
       .collection("userGameHistory")
       .doc(auth().currentUser?.uid)
@@ -52,16 +53,20 @@ const LanguageDifficulty = (props: Props) => {
       .get();
     userGameHistoryQuerySnapshot.forEach((doc) => {
       const data = doc.data();
-      const difficultyLvl = data.difficultyLvl;
+      const difficultyLvl = data.difficultyLevel;
       // Update completed questions in difficultyData if the difficulty level exists
       const difficultyIndex = difficultyData.findIndex(
-        (difficulty: any) => difficulty.id === difficultyLvl
+        (difficulty: any) => {
+          return difficulty.id === difficultyLvl
+        }
       );
+      console.log("index level" , difficultyData)
       if (difficultyIndex !== -1) {
         difficultyData[difficultyIndex].completedQuestions =
           (difficultyData[difficultyIndex].completedQuestions || 0) + 1;
       }
     });
+    console.log("difficultyData", difficultyData)
     return difficultyData;
   }
 
@@ -112,13 +117,13 @@ const LanguageDifficulty = (props: Props) => {
                 console.log(item)
                 return <DifficultyLevelCard 
                 key={index}
-                completed={difficulty?.completedQuestions ?? 0}
+                completed={item?.completedQuestions ?? 0}
                 title={item?.id}
                 uri={item?.img}
                 total={item?.size}
                 url="LanguageLevel"
                 isFirst={index === 0}
-                isLast={index === difficulty.length - 1}
+                isLast={index === item.length - 1}
                 backgroundColor="#f3df84"
                 borderColor="#ffc400"
 

@@ -9,13 +9,14 @@ import Dimensions from '@src/theme/Dimensions';
 import LinearGradient from 'react-native-linear-gradient';
 type Props = {}
 
-const MathLevel = (props: Props) => {
+const MathLevel = ({ route, navigation }: any) => {
+  const level = route.params.id;
   const [isLoading, setIsLoading] = useState<boolean>(true);
    const [questions, setQuestions] = useState<any>([]);
 
     async function getAllQuestions() {
         try {
-            const questionQuerySnapshot = await firestore().collection('language').doc('beginner').collection('question').get();
+            const questionQuerySnapshot = await firestore().collection('math').doc(level? level :'beginner').collection('question').orderBy("qNo").get();
             const questionData = questionQuerySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
             return questionData;
         } catch (error) {
@@ -89,8 +90,13 @@ const MathLevel = (props: Props) => {
                console.log(item)
                return <LevelCard 
               title={item?.qNo}
-              url='LanguageGame'
+              url='MathGame'
               isFirst={index === 0}
+              levelData={{
+                difficulty: level,
+                ...item,
+              
+              }}
               isLast={index === questions.length - 1}
               backgroundColor="#00b5ff"
               borderColor="#84daf3"

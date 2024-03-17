@@ -31,25 +31,25 @@ const slides = [
     id: "1",
     image: require("../../assets/global/onboarding/love.png"),
     title: "Best Digital Solution",
-    subtitle: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    subtitle: "Welcome to SignQuest!",
   },
   {
     id: "2",
     image: require("../../assets/global/onboarding/ok.png"),
     title: "Achieve Your Goals",
-    subtitle: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    subtitle: "Learns sign language and achieve your goals.",
   },
   {
     id: "3",
     image: require("../../assets/global/onboarding/yeah.png"),
-    title: "Achieve Your Goals",
-    subtitle: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    title: "Achieve New Skill",
+    subtitle: "Unlock new skills and levels.",
   },
   {
     id: "4",
     image: require("../../assets/global/onboarding/run.png"),
     title: "Increase Your Value",
-    subtitle: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    subtitle: "Lets Start The Journey",
   },
 ];
 
