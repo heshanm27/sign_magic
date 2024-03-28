@@ -21,8 +21,9 @@
   import storage from "@react-native-firebase/storage";
   import SucessModal from "@src/components/modals/SuccessModal";
   import ErrorModal from "@src/components/modals/ErrorModal";
-  import SuccessImage from "../../../assets/lang/emotion/happy.png";
-  import ErrorImage from "../../../assets/lang/emotion/sad.png";
+  import SuccessImage from "../../../assets/env/emotion/happy.png";
+  import ErrorImage from "../../../assets/env/emotion/sad.png";
+  import LoadImage from "../../../assets/env/load.png";
   import { useNavigation } from "@react-navigation/native";
   import Icon from "react-native-vector-icons/Ionicons";
   import { LevelData } from "@src/components/card/level";
@@ -65,7 +66,7 @@
           snapshot.ref.getDownloadURL().then((downloadURL) => {
             console.log("File available at", downloadURL);
   
-            fetch("https://obliging-skink-perfect.ngrok-free.app/amd/detection", {
+            fetch("https://obliging-skink-perfect.ngrok-free.app/detection/env", {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
@@ -117,8 +118,7 @@
           .collection("userGameHistory")
           .get();
   
-       
-            console.log("User game history is empty")
+
             await firestore().collection("userGameHistory").doc(auth().currentUser?.uid).collection("userGameHistory").doc(levelData.id).set({
               score: 0,
               completed: false,
@@ -183,7 +183,7 @@
         }, 1000);
       }
   
-      if(timer === 1 && isResultPending ){
+      if(timer < 10  && isResultPending ){
         setIsLoading(true);
       }
       return () => {
@@ -255,7 +255,7 @@
   
         <SucessModal
           image={SuccessImage}
-          color={["#ffc400", "#f3df84"]}
+          color={["#35b007", "#9bf384"]}
           onRetry={() => {
             setisSuceessShowPopup(false);
             setIsRecording(false);
@@ -269,7 +269,7 @@
           isOpen={isSucessShowPopup}
         />
         <ErrorModal
-          color={["#ffc400", "#f3df84"]}
+          color={["#35b007", "#9bf384"]}
           msg={errorMsg}
           image={ErrorImage}
           onRetry={() => {
@@ -279,12 +279,13 @@
           }}
           onSucess={() => {
             setIsErrorPopUp(false);
+            navigation.goBack();
           }}
           isOpen={isErrorPopUp}
         />
         <LoadingModal
-          color={["#ffc400", "#f3df84"]}
-          image={ErrorImage}
+          color={["#35b007", "#9bf384"]}
+          image={LoadImage}
           isOpen={isLoading}
         />
       </SafeAreaView>

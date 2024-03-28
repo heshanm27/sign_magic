@@ -60,13 +60,13 @@ const LanguageDifficulty = (props: Props) => {
           return difficulty.id === difficultyLvl
         }
       );
-      console.log("index level" , difficultyData)
+
       if (difficultyIndex !== -1) {
         difficultyData[difficultyIndex].completedQuestions =
           (difficultyData[difficultyIndex].completedQuestions || 0) + 1;
       }
     });
-    console.log("difficultyData", difficultyData)
+    
     return difficultyData;
   }
 

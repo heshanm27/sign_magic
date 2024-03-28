@@ -22,8 +22,9 @@ import {
   import storage from "@react-native-firebase/storage";
   import SucessModal from "@src/components/modals/SuccessModal";
   import ErrorModal from "@src/components/modals/ErrorModal";
-  import SuccessImage from "../../../assets/lang/emotion/happy.png";
-  import ErrorImage from "../../../assets/lang/emotion/sad.png";
+  import SuccessImage from "../../../assets/social/emotion/happy.png";
+  import ErrorImage from "../../../assets/social/emotion/sad.png";
+  import LoadImage from "../../../assets/social/load.png";
   import { useNavigation } from "@react-navigation/native";
   import Icon from "react-native-vector-icons/Ionicons";
   import { LevelData } from "@src/components/card/level";
@@ -67,7 +68,7 @@ import auth from "@react-native-firebase/auth";
           snapshot.ref.getDownloadURL().then((downloadURL) => {
             console.log("File available at", downloadURL);
   
-            fetch("https://obliging-skink-perfect.ngrok-free.app/amd/detection", {
+            fetch("https://obliging-skink-perfect.ngrok-free.app/detection/social", {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
@@ -185,7 +186,7 @@ import auth from "@react-native-firebase/auth";
         }, 1000);
       }
   
-      if(timer === 1 && isResultPending ){
+      if(timer < 10  && isResultPending ){
         setIsLoading(true);
       }
       return () => {
@@ -257,7 +258,7 @@ import auth from "@react-native-firebase/auth";
   
         <SucessModal
           image={SuccessImage}
-          color={["#ffc400", "#f3df84"]}
+          color={["#ff0000", "#f38484"]}
           onRetry={() => {
             setisSuceessShowPopup(false);
             setIsRecording(false);
@@ -271,7 +272,7 @@ import auth from "@react-native-firebase/auth";
           isOpen={isSucessShowPopup}
         />
         <ErrorModal
-          color={["#ffc400", "#f3df84"]}
+          color={["#ff0000", "#f38484"]}
           msg={errorMsg}
           image={ErrorImage}
           onRetry={() => {
@@ -281,12 +282,13 @@ import auth from "@react-native-firebase/auth";
           }}
           onSucess={() => {
             setIsErrorPopUp(false);
+            navigation.goBack();
           }}
           isOpen={isErrorPopUp}
         />
         <LoadingModal
-          color={["#ffc400", "#f3df84"]}
-          image={ErrorImage}
+          color={["#ff0000", "#f38484"]}
+          image={LoadImage}
           isOpen={isLoading}
         />
       </SafeAreaView>

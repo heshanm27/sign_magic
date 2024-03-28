@@ -24,6 +24,7 @@ import SucessModal from "@src/components/modals/SuccessModal";
 import ErrorModal from "@src/components/modals/ErrorModal";
 import SuccessImage from "../../../assets/lang/emotion/happy.png";
 import ErrorImage from "../../../assets/lang/emotion/sad.png";
+import LoadImage from "../../../assets/lang/load.png";
 import { useNavigation } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { LevelData } from "@src/components/card/level";
@@ -48,7 +49,7 @@ const LanuageGameScreen = ({ route, navigation }: any) => {
       fps: 30,
     },
   ]);
-  console.log("Fetching user game history", levelData.difficulty)
+
   const [timer, setTimer] = useState(30);
   const [isLoading, setIsLoading] = useState(false);
   const [isResultPending, setIsResultPending] = useState(false);
@@ -66,7 +67,7 @@ const LanuageGameScreen = ({ route, navigation }: any) => {
         snapshot.ref.getDownloadURL().then((downloadURL) => {
           console.log("File available at", downloadURL);
 
-          fetch("https://obliging-skink-perfect.ngrok-free.app/amd/detection", {
+          fetch("https://obliging-skink-perfect.ngrok-free.app/detection/lang", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -185,12 +186,13 @@ const LanuageGameScreen = ({ route, navigation }: any) => {
       }, 1000);
     }
 
-    if(timer === 1 && isResultPending ){
+    if(timer < 10 && isResultPending ){
       setIsLoading(true);
     }
     return () => {
       if (interval) {
         clearInterval(interval);
+        // camera.current?.stopRecording();
       }
     };
   }, [timer]);
@@ -289,7 +291,7 @@ const LanuageGameScreen = ({ route, navigation }: any) => {
       />
       <LoadingModal
         color={["#ffc400", "#f3df84"]}
-        image={ErrorImage}
+        image={LoadImage}
         isOpen={isLoading}
       />
     </SafeAreaView>

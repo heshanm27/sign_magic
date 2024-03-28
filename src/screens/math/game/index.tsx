@@ -22,8 +22,9 @@ import CustomModal from "@src/components/modals/SuccessModal";
 import storage from "@react-native-firebase/storage";
 import SucessModal from "@src/components/modals/SuccessModal";
 import ErrorModal from "@src/components/modals/ErrorModal";
-import SuccessImage from "../../../assets/lang/emotion/happy.png";
-import ErrorImage from "../../../assets/lang/emotion/sad.png";
+import SuccessImage from "../../../assets/math/emotion/happy.png";
+import ErrorImage from "../../../assets/math/emotion/sad.png";
+import LoadImage from "../../../assets/math/emotion/load.png";
 import { useNavigation } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { LevelData } from "@src/components/card/level";
@@ -66,7 +67,7 @@ const MathGameScreen = ({ route, navigation }: any) => {
         snapshot.ref.getDownloadURL().then((downloadURL) => {
           console.log("File available at", downloadURL);
 
-          fetch("https://obliging-skink-perfect.ngrok-free.app/amd/detection", {
+          fetch("https://obliging-skink-perfect.ngrok-free.app/detection/math", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -98,6 +99,9 @@ const MathGameScreen = ({ route, navigation }: any) => {
             }).finally(()=>{
               setIsLoading(false);
             });
+        }).catch((error) => {
+          setIsResultPending(false);
+          console.log(error);
         });
         console.log(snapshot);
       },
@@ -186,7 +190,7 @@ const MathGameScreen = ({ route, navigation }: any) => {
       }, 1000);
     }
 
-    if(timer === 1 && isResultPending ){
+    if(timer < 10  && isResultPending ){
       setIsLoading(true);
     }
     return () => {
@@ -258,7 +262,7 @@ const MathGameScreen = ({ route, navigation }: any) => {
 
       <SucessModal
         image={SuccessImage}
-        color={["#ffc400", "#f3df84"]}
+        color={["#00b5ff","#84daf3"]}
         onRetry={() => {
           setisSuceessShowPopup(false);
           setIsRecording(false);
@@ -272,7 +276,7 @@ const MathGameScreen = ({ route, navigation }: any) => {
         isOpen={isSucessShowPopup}
       />
       <ErrorModal
-        color={["#ffc400", "#f3df84"]}
+        color={["#00b5ff","#84daf3"]}
         msg={errorMsg}
         image={ErrorImage}
         onRetry={() => {
@@ -282,12 +286,13 @@ const MathGameScreen = ({ route, navigation }: any) => {
         }}
         onSucess={() => {
           setIsErrorPopUp(false);
+          navigation.goBack();
         }}
         isOpen={isErrorPopUp}
       />
       <LoadingModal
-        color={["#ffc400", "#f3df84"]}
-        image={ErrorImage}
+        color={["#00b5ff","#84daf3"]}
+        image={LoadImage}
         isOpen={isLoading}
       />
     </SafeAreaView>

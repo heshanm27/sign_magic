@@ -19,7 +19,7 @@ i18n
   .use(initReactI18next) // passes i18n down to react-i18next
   .init({
     compatibilityJSON: 'v3', //To make it work for Android devices, add this line.
-    lng: 'si', 
+    lng: 'en', 
     fallbackLng: 'en',
     resources: lanuageResources,
     interpolation: {

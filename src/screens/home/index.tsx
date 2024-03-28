@@ -52,7 +52,7 @@ const Home = (props: Props) => {
     {
       description:
         "The idea with React Native Elements is more about component structure than actual design.",
-      title: "Sinhala",
+      title:t("lang_home"),
       image: LangImg,
       color: "#FEDB85",
       url: "LanguageDifficulty",
@@ -60,7 +60,7 @@ const Home = (props: Props) => {
     {
       description:
         "The idea with React Native Elements is more about component structure than actual design.",
-      title: "Mathematics",
+      title: t("math_home"),
       image: MathImg,
       color: "#69DFE5",
       url: "MathDifficulty",
@@ -68,7 +68,7 @@ const Home = (props: Props) => {
     {
       description:
         "The idea with React Native Elements is more about component structure than actual design.",
-      title: "Env Studies",
+      title: t("env_home"),
       image: EnvImg,
       color: "#E9FFB6",
       url: "EnvironmentDifficulty",
@@ -76,7 +76,7 @@ const Home = (props: Props) => {
     {
       description:
         "The idea with React Native Elements is more about component structure than actual design.",
-      title: "Gen Skills",
+      title: t("gen_home"),
       image: GenImg,
       color: "#FEB3C5",
       url: "SocialEduDifficulty",

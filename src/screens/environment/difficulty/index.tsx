@@ -2,8 +2,6 @@
 import {
   View,
   Text,
-  ActivityIndicator,
-  ScrollView,
   FlatList,
 } from "react-native";
 import firestore from "@react-native-firebase/firestore";
@@ -46,7 +44,7 @@ const EnvironmentDifficulty = (props: Props) => {
   }
 
   async function getUserGameHistory(difficultyData: any) {
-    console.log("getUserGameHistory", difficultyData)
+    
     const userGameHistoryQuerySnapshot = await firestore()
       .collection("userGameHistory")
       .doc(auth().currentUser?.uid)
@@ -61,13 +59,13 @@ const EnvironmentDifficulty = (props: Props) => {
           return difficulty.id === difficultyLvl
         }
       );
-      console.log("index level" , difficultyData)
+  
       if (difficultyIndex !== -1) {
         difficultyData[difficultyIndex].completedQuestions =
           (difficultyData[difficultyIndex].completedQuestions || 0) + 1;
       }
     });
-    console.log("difficultyData", difficultyData)
+    
     return difficultyData;
   }
 
