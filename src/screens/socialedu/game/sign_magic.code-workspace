@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "../../../.."
+		},
+		{
+			"path": "../../../../../../../Downloads/react-native-video-upload-demo-master/streaming/frontend/patches"
+		}
+	],
+	"settings": {
+		"java.configuration.updateBuildConfiguration": "interactive",
+		"typescript.tsdk": "node_modules\\typescript\\lib"
+	}
+}

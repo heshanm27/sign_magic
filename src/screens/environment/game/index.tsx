@@ -39,11 +39,12 @@
     const [isSucessShowPopup, setisSuceessShowPopup] = useState(false);
     const [isErrorPopUp, setIsErrorPopUp] = useState(false);
     const { hasPermission, requestPermission } = useCameraPermission();
+    const [isInitialized, setIsInitialized] = useState<boolean>(false);
     const format = useCameraFormat(device, [
       {
         videoResolution: {
-          width: 1920,
-          height: 1080,
+          width: 640,
+          height: 480,
         },
         fps: 30,
       },
@@ -66,7 +67,7 @@
           snapshot.ref.getDownloadURL().then((downloadURL) => {
             console.log("File available at", downloadURL);
   
-            fetch("https://obliging-skink-perfect.ngrok-free.app/detection/env", {
+            fetch("https://obliging-skink-perfect.ngrok-free.app/detection/env/v2", {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
@@ -159,7 +160,7 @@
         setIsRecording(true);
   
         camera.current.startRecording({
-          videoBitRate: "low",
+          videoBitRate: "extra-low",
           videoCodec: "h264",
           fileType: "mp4",
   
@@ -224,11 +225,20 @@
           <View style={styles.container}>
             <Camera
               ref={camera}
-              style={styles.camera}
+              style={isInitialized ?styles.camera:{
+                width:0,
+                height:0
+              }}
               device={device}
               isActive={true}
               video={true}
               format={format}
+              
+              onInitialized={
+                ()=>{
+                  setIsInitialized(true)
+                }
+              }
             />
           </View>
           <View style={{ position: "absolute", top: 10, alignSelf: "center" }}>
@@ -302,8 +312,8 @@
       backgroundColor: "white",
       borderColor: "white",
       borderRadius: 8,
-      width: 150 * Dimensions.RESPONSIVE_WIDTH,
-      height: 250 * Dimensions.RESPONSIVE_HEIGHT,
+      width: 160 * Dimensions.RESPONSIVE_WIDTH,
+      height: 280 * Dimensions.RESPONSIVE_HEIGHT,
     },
     camera: {
       width: "100%",
