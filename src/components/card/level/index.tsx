@@ -13,6 +13,8 @@ export interface LevelData {
   question:   string;
   score?:     number;
   difficulty: string;
+  help:       string;
+  helpImg:    string;
 }
 
 

@@ -31,6 +31,7 @@ import { LevelData } from "@src/components/card/level";
 import LoadingModal from "@src/components/modals/LoadingModal";
 import firestore from "@react-native-firebase/firestore";
 import auth from "@react-native-firebase/auth";
+import HelpModal from "@src/components/modals/HelpModal";
 const MathGameScreen = ({ route, navigation }: any) => {
   const levelData: LevelData = route.params.levelData;
 
@@ -41,6 +42,7 @@ const MathGameScreen = ({ route, navigation }: any) => {
   const [isSucessShowPopup, setisSuceessShowPopup] = useState(false);
   const [isErrorPopUp, setIsErrorPopUp] = useState(false);
   const { hasPermission, requestPermission } = useCameraPermission();
+  const [isHelp, setIsHelp] = useState(false)
   const format = useCameraFormat(device, [
     {
       videoResolution: {
@@ -269,6 +271,24 @@ const MathGameScreen = ({ route, navigation }: any) => {
           />
           <Text style={styles.centerText}>{levelData?.question ?? ""}</Text>
         </View>
+        <View
+          style={{
+            position: "absolute",
+            right: 10,
+            bottom: 10,
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Icon
+            name="help-circle-outline"
+            size={40}
+            color="white"
+            onPress={() => setIsHelp(true)}
+          />
+        </View>
       </LinearGradient>
 
       <SucessModal
@@ -305,6 +325,13 @@ const MathGameScreen = ({ route, navigation }: any) => {
         color={["#00b5ff","#84daf3"]}
         image={LoadImage}
         isOpen={isLoading}
+      />
+        <HelpModal
+       color={["#00b5ff","#84daf3"]}
+       image={levelData.helpImg}
+       helpText={levelData.help}
+       isOpen={isHelp}
+       onClose={()=>setIsHelp(false)}
       />
     </SafeAreaView>
   );

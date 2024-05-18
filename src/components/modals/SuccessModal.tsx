@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { View, Text, ModalProps, Image, Pressable } from "react-native";
 import { Modal } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
@@ -17,6 +18,7 @@ export default function SucessModal({ isOpen, children,
     onSucess,
     color,
     ...rest }: Props) {
+      const { t } = useTranslation();
   return (
     <Modal visible={isOpen} transparent={true}>
       <View
@@ -46,7 +48,7 @@ export default function SucessModal({ isOpen, children,
               padding: 10,
             }}
           >
-            Hurrey! You won the level
+            {t("success_modal_title")}
           </Text>
           <Image
             source={image}
@@ -86,7 +88,7 @@ export default function SucessModal({ isOpen, children,
                   fontWeight: "bold",
                 }}
               >
-                Try Again
+                {t("success_modal_try_btn")}
               </Text>
             </Pressable>
 
@@ -108,8 +110,7 @@ export default function SucessModal({ isOpen, children,
                   padding: 10,
                   fontWeight: "bold",
                 }}
-              >
-                Next
+              >{t('success_modal_next_btn')}
               </Text>
             </Pressable>
           </View>

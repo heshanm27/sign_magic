@@ -13,5 +13,14 @@
     "select_difficulty":"දුෂ්කරතාවය තෝරන්න",
     "select_difficulty_desc":"ඔබට ක්‍රීඩා කිරීමට අවශ්‍ය දුෂ්කරතා මට්ටම තෝරන්න",
     "select_level":"මට්ටම තෝරන්න",
-    "select_level_desc":"ඔබට ක්‍රීඩා කිරීමට අවශ්‍ය මට්ටම තෝරන්න"
+    "select_level_desc":"ඔබට ක්‍රීඩා කිරීමට අවශ්‍ය මට්ටම තෝරන්න",
+    "help_modal_title":"ප්‍රශ්නය විසඳීමට මෙම කුඩා උපකාරය භාවිතා කරන්න",
+    "error_modal_title":"කාලය අවසන්, නැවත උත්සාහ කරන්න?",
+    "error_modal_try_btn":"නැවත උත්සාහ කරන්න",
+    "error_modal_next_btn":"ඊළඟ",
+    "loading_modal_title":"රැඳී සිටින්න! ප්‍රතිඵලය බලාපොරොත්තුවෙන්...",
+    "success_modal_title":"හරී! ඔබ තරග අදියර දිනුවා",
+    "success_modal_next_btn":"ඊළඟ",
+    "success_modal_try_btn":"නැවත උත්සාහ කරන්න"
+
 }

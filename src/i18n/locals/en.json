@@ -14,7 +14,17 @@
     "select_difficulty":"Select Difficulty",
     "select_difficulty_desc":"Choose the difficulty level you want to play",
     "select_level":"Select Level",
-    "select_level_desc":"Choose the level you want to play"
+    "select_level_desc":"Choose the level you want to play",
+    "help_modal_title":"Use this small help to solve the question",
+    "error_modal_title":"Time is up, retry again?",
+    "error_modal_try_btn":"Try Again",
+    "error_modal_nexy_btn":"Next",
+    "loading_modal_title":"Hang on! Waitng for result ...",
+    "success_modal_title":" Hurrey! You won the level",
+    "success_modal_next_btn":"Next",
+    "success_modal_try_btn":"Try Again"
+
+
 
 
 }

@@ -1,13 +1,14 @@
+import { useTranslation } from "react-i18next";
 import { View, Text, ModalProps, Image } from "react-native";
 import { Modal } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import Icon from "react-native-vector-icons/Ionicons";
 
-
 type Props = ModalProps & {
   isOpen: boolean;
   color: string[];
   image: any;
+  helpText: string;
   onClose: () => void;
 };
 
@@ -16,9 +17,11 @@ export default function HelpModal({
   image,
   children,
   color,
+  helpText,
   onClose,
   ...rest
 }: Props) {
+    const { t } = useTranslation();
   return (
     <Modal visible={isOpen} transparent={true}>
       <View
@@ -40,43 +43,57 @@ export default function HelpModal({
           }}
           colors={color}
         >
-             <View
+          <View
+            style={{
+              position: "absolute",
+              right: 10,
+              top: 10,
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Icon
+              name="close"
+              size={40}
+              color="white"
+              onPress={() => onClose()}
+            />
+          </View>
+          <View
           style={{
-            position: "absolute",
-            right: 10,
-            top: 10,
             display: "flex",
-            flexDirection: "row",
-            justifyContent: "center",
-            alignItems: "center",
+            flex:1,
+            flexDirection: "column",
+            justifyContent:'space-evenly',
+            alignItems:'center',
           }}
-        >
-          <Icon
-            name="close"
-            size={40}
-            color="white"
-            onPress={() => onClose()}
-          />
-        </View>
+          >
           <Text
             style={{
               color: "white",
               fontWeight: "bold",
               fontSize: 20,
               padding: 10,
+              textAlign: "center",
             }}
           >
-            Hang on! Waitng for result ...
+           {t("help_modal_title")}
           </Text>
           <Image
-            source={image}
+            source={{
+              uri: image,
+              scale: 2,
+            }}
             style={{
-              width: 115,
+              width: 155,
               height: 150,
               borderRadius: 4,
               resizeMode: "contain",
             }}
           />
+          </View>
         </LinearGradient>
       </View>
     </Modal>

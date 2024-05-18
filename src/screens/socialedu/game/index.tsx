@@ -31,10 +31,11 @@ import {
   import LoadingModal from "@src/components/modals/LoadingModal";
   import firestore from "@react-native-firebase/firestore";
 import auth from "@react-native-firebase/auth";
+import HelpModal from "@src/components/modals/HelpModal";
 
   const SocialEduGameScreen = ({ route, navigation }: any) => {
     const levelData: LevelData = route.params.levelData;
-  
+    const [isHelp, setIsHelp] = useState(false)
     const camera = useRef<Camera>(null);
     const device = useCameraDevice("front");
     const [isRecording, setIsRecording] = useState(false);
@@ -264,6 +265,24 @@ import auth from "@react-native-firebase/auth";
             />
             <Text style={styles.centerText}>{levelData?.question ?? ""}</Text>
           </View>
+          <View
+          style={{
+            position: "absolute",
+            right: 10,
+            bottom: 10,
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Icon
+            name="help-circle-outline"
+            size={40}
+            color="white"
+            onPress={() => setIsHelp(true)}
+          />
+        </View>
         </LinearGradient>
   
         <SucessModal
@@ -301,6 +320,13 @@ import auth from "@react-native-firebase/auth";
           image={LoadImage}
           isOpen={isLoading}
         />
+          <HelpModal
+       color={["#ff0000", "#f38484"]}
+       image={levelData.helpImg}
+       helpText={levelData.help}
+       isOpen={isHelp}
+       onClose={()=>setIsHelp(false)}
+      />
       </SafeAreaView>
     );
   };

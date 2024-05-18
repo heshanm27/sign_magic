@@ -3,6 +3,7 @@ import { Modal } from "react-native";
 import LangImg from "../../assets/lang/home.png";
 import LinearGradient from "react-native-linear-gradient";
 import Spacing from "@src/theme/Spacing";
+import { useTranslation } from "react-i18next";
 
 type Props = ModalProps & {
   isOpen: boolean;
@@ -23,6 +24,7 @@ export default function ErrorModal({
   msg="Time is up, retry again?",
   ...rest
 }: Props) {
+  const { t } = useTranslation();
   return (
     <Modal visible={isOpen} transparent={true}>
       <View
@@ -52,7 +54,7 @@ export default function ErrorModal({
               padding: 10,
             }}
           >
-      {msg}
+      {t("error_modal_title")}
           </Text>
           <Image
             source={image}
@@ -92,7 +94,7 @@ export default function ErrorModal({
                   fontWeight: "bold",
                 }}
               >
-                Try Again
+                {t("error_modal_try_btn")}
               </Text>
             </Pressable>
 
@@ -115,7 +117,7 @@ export default function ErrorModal({
                   fontWeight: "bold",
                 }}
               >
-                Next
+                    {t("error_modal_next_btn")}
               </Text>
             </Pressable>
           </View>

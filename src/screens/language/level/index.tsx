@@ -26,45 +26,46 @@ const LanguageLevel = ({ route, navigation }: any) => {
         id: doc.id,
         ...doc.data(),
       }));
+      console.log(questionData,"questionData");
       return questionData;
     } catch (error) {
       console.error("Error fetching questions:", error);
     }
   }
 
-  async function getUserGameHistoryOfQuestion(questions: any) {
-    try {
-      // Get user game history for the user
-      const userGameHistoryQuerySnapshot = await firestore()
-        .collection("userGameHistory")
-        .doc("69eXeT4xIUe2iIVu06ODOlPGJyL2")
-        .collection("userGameHistory")
-        .get();
-      const updatedQuestions = [...questions];
+  // async function getUserGameHistoryOfQuestion(questions: any) {
+  //   try {
+  //     // Get user game history for the user
+  //     const userGameHistoryQuerySnapshot = await firestore()
+  //       .collection("userGameHistory")
+  //       .doc("69eXeT4xIUe2iIVu06ODOlPGJyL2")
+  //       .collection("userGameHistory")
+  //       .get();
+  //     const updatedQuestions = [...questions];
 
-      // Update completed and score in updatedQuestions if the question exists
-      userGameHistoryQuerySnapshot.forEach((doc) => {
-        const data = doc.data();
-        const questionId = doc.id;
-        const questionIndex = updatedQuestions.findIndex(
-          (question: any) => question.id === questionId
-        );
-        if (questionIndex !== -1) {
-          updatedQuestions[questionIndex].completed = true;
-          updatedQuestions[questionIndex].score = data.score;
-        }
-      });
+  //     // Update completed and score in updatedQuestions if the question exists
+  //     userGameHistoryQuerySnapshot.forEach((doc) => {
+  //       const data = doc.data();
+  //       const questionId = doc.id;
+  //       const questionIndex = updatedQuestions.findIndex(
+  //         (question: any) => question.id === questionId
+  //       );
+  //       if (questionIndex !== -1) {
+  //         updatedQuestions[questionIndex].completed = true;
+  //         updatedQuestions[questionIndex].score = data.score;
+  //       }
+  //     });
 
-      return updatedQuestions;
-    } catch (error) {
-      console.error("Error fetching user game history:", error);
-    }
-  }
+  //     return updatedQuestions;
+  //   } catch (error) {
+  //     console.error("Error fetching user game history:", error);
+  //   }
+  // }
 
   useEffect(() => {
     const fetchData = async () => {
       const questions = await getAllQuestions();
-      const updatedQuestion = await getUserGameHistoryOfQuestion(questions);
+      // const updatedQuestion = await getUserGameHistoryOfQuestion(questions);
       setQuestions(questions);
       setIsLoading(false);
     };
@@ -102,7 +103,7 @@ const LanguageLevel = ({ route, navigation }: any) => {
               }}
               data={questions}
               renderItem={({ index, item }) => {
-                console.log(item);
+                console.log(item,";evel");
                 return (
                   <LevelCard
                     title={item?.qNo}

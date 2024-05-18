@@ -34,6 +34,7 @@ import auth from "@react-native-firebase/auth";
 import HelpModal from "@src/components/modals/HelpModal";
 const LanuageGameScreen = ({ route, navigation }: any) => {
   const levelData: LevelData = route.params.levelData;
+  console.log(levelData,"levelData")
   const [width,setWidth] = useState(170)
   const camera = useRef<Camera>(null);
   const device = useCameraDevice("front");
@@ -289,7 +290,6 @@ const LanuageGameScreen = ({ route, navigation }: any) => {
           />
           <Text style={styles.centerText}>{levelData?.question ?? ""}</Text>
         </View>
-
         <View
           style={{
             position: "absolute",
@@ -308,6 +308,8 @@ const LanuageGameScreen = ({ route, navigation }: any) => {
             onPress={() => setIsHelp(true)}
           />
         </View>
+
+       
       </LinearGradient>
 
       <SucessModal
@@ -349,7 +351,8 @@ const LanuageGameScreen = ({ route, navigation }: any) => {
       />
       <HelpModal
        color={["#ffc400", "#f3df84"]}
-       image={LoadImage}
+       image={levelData.helpImg}
+       helpText={levelData.help}
        isOpen={isHelp}
        onClose={()=>setIsHelp(false)}
       />
