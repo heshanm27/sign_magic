@@ -6,13 +6,14 @@ import Spacing from "@src/theme/Spacing";
 import LevelCard from "@src/components/card/level";
 import Dimensions from "@src/theme/Dimensions";
 import LinearGradient from "react-native-linear-gradient";
+import { useTranslation } from "react-i18next";
 type Props = {};
 
 const LanguageLevel = ({ route, navigation }: any) => {
   const level = route.params.id;
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [questions, setQuestions] = useState<any>([]);
-
+  const { t } = useTranslation();
   async function getAllQuestions() {
     try {
       const questionQuerySnapshot = await firestore()
@@ -87,9 +88,9 @@ const LanguageLevel = ({ route, navigation }: any) => {
         ) : (
           <View>
             <View className="mb-5">
-              <Text className="text-4xl font-bold">Select Level </Text>
+              <Text className="text-4xl font-bold">{t('select_level')}</Text>
               <Text className="text-1xl font-medium">
-                Select a level to start playing
+              {t('select_level_desc')}
               </Text>
             </View>
 

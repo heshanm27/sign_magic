@@ -35,6 +35,7 @@
   
     const camera = useRef<Camera>(null);
     const device = useCameraDevice("front");
+    const [isLoaded,setIsloaded] = useState(false)
     const [isRecording, setIsRecording] = useState(false);
     const [isSucessShowPopup, setisSuceessShowPopup] = useState(false);
     const [isErrorPopUp, setIsErrorPopUp] = useState(false);
@@ -138,6 +139,7 @@
       if (!hasPermission) {
         requestPermission();
       }
+      setIsloaded(true)
     }, [hasPermission]);
   
     if (!hasPermission) {
@@ -156,7 +158,7 @@
       );
   
     useEffect(() => {
-      if (camera.current && !isRecording) {
+      if (isInitialized&&camera.current && !isRecording) {
         setIsRecording(true);
   
         camera.current.startRecording({
@@ -223,7 +225,7 @@
             />
           </View>
           <View style={styles.container}>
-            <Camera
+          { isLoaded && <Camera
               ref={camera}
               style={isInitialized ?styles.camera:{
                 width:0,
@@ -239,7 +241,7 @@
                   setIsInitialized(true)
                 }
               }
-            />
+            />}
           </View>
           <View style={{ position: "absolute", top: 10, alignSelf: "center" }}>
             <Text style={{ fontSize: 40, fontWeight: "bold" }}>{timer}</Text>

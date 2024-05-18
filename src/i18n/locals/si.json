@@ -6,5 +6,12 @@
     "lang_home":"සිංහල",
     "math_home":"ගණිතය",
     "env_home":"පරිසර අධ්‍යයනය",
-    "gen_home":"සාමාන්ය කුසලතා"
+    "gen_home":"සාමාන්ය කුසලතා",
+    "menu_home":"මුල් පිටුව",
+    "menu_logout":"යෙදුමෙන් ඉවත් වන්න",
+    "menu_lang":"සිංහල",
+    "select_difficulty":"දුෂ්කරතාවය තෝරන්න",
+    "select_difficulty_desc":"ඔබට ක්‍රීඩා කිරීමට අවශ්‍ය දුෂ්කරතා මට්ටම තෝරන්න",
+    "select_level":"මට්ටම තෝරන්න",
+    "select_level_desc":"ඔබට ක්‍රීඩා කිරීමට අවශ්‍ය මට්ටම තෝරන්න"
 }

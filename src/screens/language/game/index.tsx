@@ -31,16 +31,19 @@ import { LevelData } from "@src/components/card/level";
 import LoadingModal from "@src/components/modals/LoadingModal";
 import firestore from "@react-native-firebase/firestore";
 import auth from "@react-native-firebase/auth";
+import HelpModal from "@src/components/modals/HelpModal";
 const LanuageGameScreen = ({ route, navigation }: any) => {
   const levelData: LevelData = route.params.levelData;
-const [width,setWidth] = useState(170)
+  const [width,setWidth] = useState(170)
   const camera = useRef<Camera>(null);
   const device = useCameraDevice("front");
+  const [isLoaded,setIsloaded] = useState(false)
   const [isRecording, setIsRecording] = useState(false);
   const [isSucessShowPopup, setisSuceessShowPopup] = useState(false);
   const [isErrorPopUp, setIsErrorPopUp] = useState(false);
   const { hasPermission, requestPermission } = useCameraPermission();
   const [isInitialized, setIsInitialized] = useState<boolean>(false);
+  const [isHelp, setIsHelp] = useState(false)
   const format = useCameraFormat(device, [
     {
       videoResolution: {
@@ -67,7 +70,6 @@ const [width,setWidth] = useState(170)
       (snapshot) => {
         snapshot.ref.getDownloadURL().then((downloadURL) => {
           console.log("File available at", downloadURL);
-
           fetch("https://obliging-skink-perfect.ngrok-free.app/detection/lang/v2", {
             method: "POST",
             headers: {
@@ -79,13 +81,10 @@ const [width,setWidth] = useState(170)
             }),
           })
             .then((res) => {
-                console.log("Response",res)
               return res.json();
             })
             .then((data) => {
-              console.log(data);
               if (data.result) {
-                
                 setisSuceessShowPopup(true);
                 setIsResultPending(false);
               } else {
@@ -96,15 +95,12 @@ const [width,setWidth] = useState(170)
             })
             .catch((err) => {
               setIsResultPending(false);
-              console.log(err);
             }).finally(()=>{
               setIsLoading(false);
             });
         });
-        console.log(snapshot);
       },
       (error) => {
-        console.log(error);
         setIsResultPending(false);
       },
       () => {}
@@ -118,20 +114,45 @@ const [width,setWidth] = useState(170)
         .collection("userGameHistory")
         .doc(auth().currentUser?.uid)
         .collection("userGameHistory")
+        .doc(levelData.id)
         .get();
 
-     
-          console.log("User game history is empty")
+        if(!userGameHistoryQuerySnapshot.exists){
+          await firestore().collection("userGameHistory").doc(auth().currentUser?.uid).collection("userGameHistory").doc(levelData.id).set({
+            score: 0,
+            completed: true,
+            difficultyLevel: levelData.difficulty ? levelData.difficulty : "beginner",
+          })
+        }else{
+          await firestore().collection("userGameHistory").doc(auth().currentUser?.uid).collection("userGameHistory").doc(levelData.id).update({
+            score: 0,
+            completed: true,
+            difficultyLevel: levelData.difficulty ? levelData.difficulty : "beginner",
+          })
+        }
+         
+      
+      
+    } catch (error) {
+      console.error("Error fetching user game history:", error);
+    }
+  }
+
+  const updateUserGameHistoryOfQuestionOnFail = async () => {
+    try {
+      const userGameHistoryQuerySnapshot = await firestore()
+        .collection("userGameHistory")
+        .doc(auth().currentUser?.uid)
+        .collection("userGameHistory")
+        .doc(levelData.id)
+        .get();
+        if(!userGameHistoryQuerySnapshot.exists){
           await firestore().collection("userGameHistory").doc(auth().currentUser?.uid).collection("userGameHistory").doc(levelData.id).set({
             score: 0,
             completed: false,
             difficultyLevel: levelData.difficulty ? levelData.difficulty : "beginner",
           })
-
-      
-      
-
-      
+        }
     } catch (error) {
       console.error("Error fetching user game history:", error);
     }
@@ -141,6 +162,7 @@ const [width,setWidth] = useState(170)
     if (!hasPermission) {
       requestPermission();
     }
+    setIsloaded(true)
   }, [hasPermission]);
 
   if (!hasPermission) {
@@ -161,7 +183,7 @@ const [width,setWidth] = useState(170)
     );
 
   useEffect(() => {
-    if (camera.current && !isRecording) {
+    if (isInitialized && camera.current && !isRecording) {
       setIsRecording(true);
 
       camera.current.startRecording({
@@ -178,6 +200,7 @@ const [width,setWidth] = useState(170)
 
     if (timer === 20) {
       if (camera.current && isRecording) {
+        console.log("Video recording stopped")
         camera.current.stopRecording();
       }
     }
@@ -229,7 +252,7 @@ const [width,setWidth] = useState(170)
           />
         </View>
         <View style={{...styles.container}}>
-          <Camera
+          {isLoaded &&<Camera
             ref={camera}
             style={isInitialized ?styles.camera:{
               width:0,
@@ -244,7 +267,7 @@ const [width,setWidth] = useState(170)
                 setIsInitialized(true)
               }
             }
-          />
+          />}
         </View>
         <View style={{ position: "absolute", top: 10, alignSelf: "center" }}>
           <Text style={{ fontSize: 40, fontWeight: "bold" }}>{timer}</Text>
@@ -265,6 +288,25 @@ const [width,setWidth] = useState(170)
             style={styles.centerImage}
           />
           <Text style={styles.centerText}>{levelData?.question ?? ""}</Text>
+        </View>
+
+        <View
+          style={{
+            position: "absolute",
+            right: 10,
+            bottom: 10,
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Icon
+            name="help-circle-outline"
+            size={40}
+            color="white"
+            onPress={() => setIsHelp(true)}
+          />
         </View>
       </LinearGradient>
 
@@ -295,7 +337,7 @@ const [width,setWidth] = useState(170)
         }}
         onSucess={() => {
           setIsErrorPopUp(false);
-          updateUserGameHistoryOfQuestion();
+          updateUserGameHistoryOfQuestionOnFail()
           navigation.goBack();
         }}
         isOpen={isErrorPopUp}
@@ -304,6 +346,12 @@ const [width,setWidth] = useState(170)
         color={["#ffc400", "#f3df84"]}
         image={LoadImage}
         isOpen={isLoading}
+      />
+      <HelpModal
+       color={["#ffc400", "#f3df84"]}
+       image={LoadImage}
+       isOpen={isHelp}
+       onClose={()=>setIsHelp(false)}
       />
     </SafeAreaView>
   );

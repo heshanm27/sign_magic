@@ -15,12 +15,13 @@ import Dimensions from "@src/theme/Dimensions";
 import LinearGradient from "react-native-linear-gradient";
 import DifficultiesSkelton from "@src/components/skelton/difficulties";
 import auth from "@react-native-firebase/auth";
+import { useTranslation } from "react-i18next";
 type Props = {};
 
 const SocialEduDifficulty = (props: Props) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [difficulty, setDifficulty] = useState<any>([]);
-
+  const { t } = useTranslation();
   // Function to get the difficulty data
   async function getDifficulty() {
     const languageQuerySnapshot = await firestore()
@@ -102,9 +103,9 @@ const SocialEduDifficulty = (props: Props) => {
         ) : (
           <View>
             <View className="mb-5">
-              <Text className="text-4xl font-bold">Select Difficulty </Text>
+              <Text className="text-4xl font-bold">{t('select_difficulty')} </Text>
               <Text className="text-1xl font-medium">
-                Select a difficulty to start playing
+              {t('select_difficulty_desc')}
               </Text>
             </View>
 

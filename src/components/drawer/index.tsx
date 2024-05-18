@@ -8,10 +8,7 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import auth from "@react-native-firebase/auth";
 import LinearGradient from "react-native-linear-gradient";
 import { useTranslation } from "react-i18next";
-const DrawerList = [
-  { icon: "home-outline", label: "Home", navigateTo: "Home" },
-  { icon: "account-multiple", label: "Profile", navigateTo: "Profile" },
-];
+
 const DrawerLayout = ({ icon, label, navigateTo,isFocused }: any) => {
   const navigation = useNavigation<any>();
 
@@ -32,26 +29,32 @@ const DrawerLayout = ({ icon, label, navigateTo,isFocused }: any) => {
 type DrawerItemsProps = {
 focused: string;
 }
-const DrawerItems = ({focused}:DrawerItemsProps) => {
-  return DrawerList.map((el, i) => {
-    return (
-      <DrawerLayout
-        key={i}
-        icon={el.icon}
-        label={el.label}
-        navigateTo={el.navigateTo}
-        isFocused={focused === el.navigateTo}
-        
-      />
-    );
-  });
-};
+
 function DrawerContent(props: DrawerContentComponentProps) {
   const {routeNames,index} = props.state;
   const focused = routeNames[index];
   const {i18n}= useTranslation();
-  
+  const { t } = useTranslation();
   console.log(focused);
+  const DrawerList = [
+    { icon: "home-outline", label: t("menu_home"), navigateTo: "Home" },
+    // { icon: "account-multiple", label: "Profile", navigateTo: "Profile" },
+  ];
+
+  const DrawerItems = ({focused}:DrawerItemsProps) => {
+    return DrawerList.map((el, i) => {
+      return (
+        <DrawerLayout
+          key={i}
+          icon={el.icon}
+          label={el.label}
+          navigateTo={el.navigateTo}
+          isFocused={focused === el.navigateTo}
+          
+        />
+      );
+    });
+  };
   return (
     // <LinearGradient
     // style={{
@@ -101,7 +104,7 @@ function DrawerContent(props: DrawerContentComponentProps) {
               i18n.changeLanguage( "en");
             }
           }}
-          label={i18n.language === "en" ? "English" : "Sinhala" }
+          label={i18n.language === "en" ? t("menu_lang") : t("menu_lang") }
         
         />
         <DrawerItem
@@ -111,7 +114,7 @@ function DrawerContent(props: DrawerContentComponentProps) {
           onPress={() => {
             auth().signOut();
           }}
-          label="Sign Out"
+          label={t("menu_logout")}
         />
       </View>
     </View>

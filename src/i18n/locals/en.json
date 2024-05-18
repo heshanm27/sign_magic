@@ -6,5 +6,15 @@
     "lang_home":"Sinhala",
     "math_home":"Math",
     "env_home":"Environment Studies",
-    "gen_home":"General Skills"
+    "gen_home":"General Skills",
+    "menu_home":"Home",
+    "menu_profile":"Profile",
+    "menu_logout":"Sign Out",
+    "menu_lang":"English",
+    "select_difficulty":"Select Difficulty",
+    "select_difficulty_desc":"Choose the difficulty level you want to play",
+    "select_level":"Select Level",
+    "select_level_desc":"Choose the level you want to play"
+
+
 }

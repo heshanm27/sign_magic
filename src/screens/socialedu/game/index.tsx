@@ -41,6 +41,7 @@ import auth from "@react-native-firebase/auth";
     const [isSucessShowPopup, setisSuceessShowPopup] = useState(false);
     const [isErrorPopUp, setIsErrorPopUp] = useState(false);
     const { hasPermission, requestPermission } = useCameraPermission();
+    const [isLoaded,setIsloaded] = useState(false)
     const format = useCameraFormat(device, [
       {
         videoResolution: {
@@ -140,6 +141,7 @@ import auth from "@react-native-firebase/auth";
       if (!hasPermission) {
         requestPermission();
       }
+      setIsloaded(true)
     }, [hasPermission]);
   
     if (!hasPermission) {
@@ -158,7 +160,7 @@ import auth from "@react-native-firebase/auth";
       );
   
     useEffect(() => {
-      if (camera.current && !isRecording) {
+      if (isInitialized && camera.current && !isRecording) {
         setIsRecording(true);
   
         camera.current.startRecording({
@@ -225,7 +227,7 @@ import auth from "@react-native-firebase/auth";
             />
           </View>
           <View style={styles.container}>
-            <Camera
+          {isLoaded&&  <Camera
               ref={camera}
               style={isInitialized ?styles.camera:{
                 width:0,
@@ -240,7 +242,7 @@ import auth from "@react-native-firebase/auth";
                   setIsInitialized(true)
                 }
               }
-            />
+            />}
           </View>
           <View style={{ position: "absolute", top: 10, alignSelf: "center" }}>
             <Text style={{ fontSize: 40, fontWeight: "bold" }}>{timer}</Text>

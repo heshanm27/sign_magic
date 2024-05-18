@@ -1,25 +1,25 @@
 import {
   View,
   Text,
-  ActivityIndicator,
-  ScrollView,
   FlatList,
 } from "react-native";
 import firestore from "@react-native-firebase/firestore";
 import { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import DifficultyLevelCard from "@src/components/card/difficulty";
-import { Image } from "react-native-svg";
 import Spacing from "@src/theme/Spacing";
 import Dimensions from "@src/theme/Dimensions";
 import LinearGradient from "react-native-linear-gradient";
 import DifficultiesSkelton from "@src/components/skelton/difficulties";
 import auth from "@react-native-firebase/auth";
+import { useTranslation } from "react-i18next";
 type Props = {};
 
 const LanguageDifficulty = (props: Props) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [difficulty, setDifficulty] = useState<any>([]);
+  const { t } = useTranslation();
+
 
   // Function to get the difficulty data
   async function getDifficulty() {
@@ -27,6 +27,7 @@ const LanguageDifficulty = (props: Props) => {
       .collection("language")
       .orderBy("order")
       .get();
+      
     // Get the size of each difficulty level and set completed questions to 0
     const difficultyData = await Promise.all(
       languageQuerySnapshot.docs.map(async (languageDoc) => {
@@ -45,7 +46,7 @@ const LanguageDifficulty = (props: Props) => {
   }
 
   async function getUserGameHistory(difficultyData: any) {
-    console.log("getUserGameHistory", difficultyData)
+   
     const userGameHistoryQuerySnapshot = await firestore()
       .collection("userGameHistory")
       .doc(auth().currentUser?.uid)
@@ -81,6 +82,8 @@ const LanguageDifficulty = (props: Props) => {
     fetchData();
   }, []);
 
+
+
   return (
     <SafeAreaView className="flex flex-1 flex-grow">
       <LinearGradient style={{
@@ -104,9 +107,9 @@ const LanguageDifficulty = (props: Props) => {
         ) : (
           <View>
             <View className="mb-5">
-              <Text className="text-4xl font-bold">Select Difficulty </Text>
+              <Text className="text-4xl font-bold">{t('select_difficulty')}</Text>
               <Text className="text-1xl font-medium">
-                Select a difficulty to start playing
+              {t('select_difficulty_desc')}
               </Text>
             </View>
 
@@ -114,7 +117,6 @@ const LanguageDifficulty = (props: Props) => {
               contentContainerStyle={{ gap: Spacing.MEDIUM, flexGrow: 1 ,paddingBottom:100 * Dimensions.RESPONSIVE_HEIGHT }}
               data={difficulty}
               renderItem={({ index,item }) => {
-                console.log(item)
                 return <DifficultyLevelCard 
                 key={index}
                 completed={item?.completedQuestions ?? 0}
