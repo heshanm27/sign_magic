@@ -54,7 +54,7 @@ export default function ErrorModal({
               padding: 10,
             }}
           >
-      {t("error_modal_title")}
+      {msg}
           </Text>
           <Image
             source={image}

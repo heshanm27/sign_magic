@@ -32,6 +32,7 @@ import LoadingModal from "@src/components/modals/LoadingModal";
 import firestore from "@react-native-firebase/firestore";
 import auth from "@react-native-firebase/auth";
 import HelpModal from "@src/components/modals/HelpModal";
+import { useTranslation } from "react-i18next";
 const MathGameScreen = ({ route, navigation }: any) => {
   const levelData: LevelData = route.params.levelData;
 
@@ -56,7 +57,8 @@ const MathGameScreen = ({ route, navigation }: any) => {
   const [timer, setTimer] = useState(30);
   const [isLoading, setIsLoading] = useState(false);
   const [isResultPending, setIsResultPending] = useState(false);
-  const [errorMsg, setErrorMsg] = useState("Time is up, retry again?");
+  const { t } = useTranslation();
+  const [errorMsg, setErrorMsg] = useState(t("error_modal_time_up_title"));
 
   const uploadVVideo = async (file: any) => {
     setIsResultPending(true);
@@ -91,7 +93,7 @@ const MathGameScreen = ({ route, navigation }: any) => {
                 setisSuceessShowPopup(true);
                 setIsResultPending(false);
               } else {
-                setErrorMsg("Try again, you can do it!");
+                setErrorMsg(t("error_modal_wrong_answer_title"));
                 setIsResultPending(false);
                 setIsErrorPopUp(true);
               }
